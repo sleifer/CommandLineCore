@@ -15,6 +15,7 @@
 		DB23F6F5211096230048E1E9 /* BashcompfileCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F6EE211096230048E1E9 /* BashcompfileCommand.swift */; };
 		DB23F6F6211096230048E1E9 /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F6EF211096230048E1E9 /* ProcessRunner.swift */; };
 		DB23F6FA211098110048E1E9 /* CommandLineRunLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F6F9211098110048E1E9 /* CommandLineRunLoop.swift */; };
+		DB23F6FF211099CA0048E1E9 /* DebugLogFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		DB23F6EE211096230048E1E9 /* BashcompfileCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BashcompfileCommand.swift; sourceTree = "<group>"; };
 		DB23F6EF211096230048E1E9 /* ProcessRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		DB23F6F9211098110048E1E9 /* CommandLineRunLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineRunLoop.swift; sourceTree = "<group>"; };
+		DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugLogFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				DB23F6EE211096230048E1E9 /* BashcompfileCommand.swift */,
 				DB23F6EA211096230048E1E9 /* Command.swift */,
 				DB23F6F9211098110048E1E9 /* CommandLineRunLoop.swift */,
+				DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */,
 				DB23F6EF211096230048E1E9 /* ProcessRunner.swift */,
 				DB23F6EC211096230048E1E9 /* String-Extension.swift */,
 				DB23F6ED211096230048E1E9 /* StringWriting.swift */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB23F6F5211096230048E1E9 /* BashcompfileCommand.swift in Sources */,
+				DB23F6FF211099CA0048E1E9 /* DebugLogFile.swift in Sources */,
 				DB23F6FA211098110048E1E9 /* CommandLineRunLoop.swift in Sources */,
 				DB23F6F0211096230048E1E9 /* BashcompCommand.swift in Sources */,
 				DB23F6F4211096230048E1E9 /* StringWriting.swift in Sources */,

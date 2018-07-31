@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     var expandingTildeInPath: String {
         return NSString(string: self).expandingTildeInPath
     }

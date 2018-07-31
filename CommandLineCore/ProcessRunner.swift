@@ -8,23 +8,23 @@
 
 import Foundation
 
-typealias ProcessRunnerHandler = (_ runner: ProcessRunner) -> Void
+public typealias ProcessRunnerHandler = (_ runner: ProcessRunner) -> Void
 
-class ProcessRunner {
-    let command: String
-    let arguments: [String]
+open class ProcessRunner {
+    public let command: String
+    public let arguments: [String]
     var process: Process?
-    var status: Int32 = -999
-    var stdOut: String = ""
-    var stdErr: String = ""
-    var echo: Bool = false
+    public var status: Int32 = -999
+    public var stdOut: String = ""
+    public var stdErr: String = ""
+    public var echo: Bool = false
 
-    init(_ cmd: String, args: [String]) {
+    public init(_ cmd: String, args: [String]) {
         command = cmd
         arguments = args
     }
 
-    func start(_ completion: ProcessRunnerHandler? = nil) {
+    public func start(_ completion: ProcessRunnerHandler? = nil) {
         let proc = Process()
         process = proc
         proc.launchPath = command
@@ -102,7 +102,7 @@ class ProcessRunner {
     }
 
     @discardableResult
-    class func runCommand(_ cmd: String, args: [String], echo: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ cmd: String, args: [String], echo: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let fullCmd: String
         if cmd == whichCmd {
             fullCmd = cmd

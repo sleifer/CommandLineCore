@@ -8,27 +8,27 @@
 
 import Foundation
 
-class CommandLineRunLoop {
-    static let shared = CommandLineRunLoop()
+open class CommandLineRunLoop {
+    public static let shared = CommandLineRunLoop()
 
     var backgroundCount: Int = 0
 
-    func waitForBackgroundTasks() {
+    public func waitForBackgroundTasks() {
         while (backgroundCount > 0 && spinRunLoop() == true) {
             // do nothing
         }
     }
 
     @discardableResult
-    func spinRunLoop() -> Bool {
+    public func spinRunLoop() -> Bool {
         return RunLoop.current.run(mode: .defaultRunLoopMode, before: Date(timeIntervalSinceNow: 2))
     }
 
-    func startBackgroundTask() {
+    public func startBackgroundTask() {
         backgroundCount += 1
     }
 
-    func endBackgroundTask() {
+    public func endBackgroundTask() {
         backgroundCount -= 1
     }
 

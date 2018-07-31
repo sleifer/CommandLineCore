@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BashcompfileCommand: Command {
+open class BashcompfileCommand: Command {
     let format1 = """
 _%@()
 {
@@ -32,7 +32,7 @@ _%@()
 complete -o filenames -F _%@ %@
 """
 
-    override func run(cmd: ParsedCommand) {
+    override open func run(cmd: ParsedCommand) {
         print(String(format: format1, cmd.toolName))
         print(String(format: format2, cmd.toolName, cmd.toolName))
         for param in cmd.parameters {

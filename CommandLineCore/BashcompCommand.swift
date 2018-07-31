@@ -8,15 +8,15 @@
 
 import Foundation
 
-class BashcompCommand: Command {
+open class BashcompCommand: Command {
     var parser: ArgParser?
 
-    convenience init(parser: ArgParser) {
+    public convenience init(parser: ArgParser) {
         self.init()
         self.parser = parser
     }
 
-    override func run(cmd: ParsedCommand) {
+    override open func run(cmd: ParsedCommand) {
         let last = cmd.parameters.last ?? ""
         let args = Array(cmd.parameters.dropLast())
 

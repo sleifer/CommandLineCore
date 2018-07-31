@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct CommandOption {
-    var shortOption: String?
-    var longOption: String
-    var argumentCount: Int
-    var hasFileArguments: Bool
-    var help: String
+public struct CommandOption {
+    public var shortOption: String?
+    public var longOption: String
+    public var argumentCount: Int
+    public var hasFileArguments: Bool
+    public var help: String
 
-    init() {
+    public init() {
         longOption = ""
         argumentCount = 0
         hasFileArguments = false
@@ -23,36 +23,36 @@ struct CommandOption {
     }
 }
 
-struct ParsedOption {
-    var longOption: String
-    var arguments: [String]
+public struct ParsedOption {
+    public var longOption: String
+    public var arguments: [String]
 
-    init() {
+    public init() {
         longOption = ""
         arguments = []
     }
 }
 
-struct ParameterInfo {
-    var hint: String
-    var help: String
+public struct ParameterInfo {
+    public var hint: String
+    public var help: String
 
-    init() {
+    public init() {
         hint = ""
         help = ""
     }
 }
 
-struct CommandDefinition {
-    var options: [CommandOption]
-    var requiredParameters: [ParameterInfo]
-    var optionalParameters: [ParameterInfo]
-    var hasFileParameters: Bool
-    var help: String
-    var subcommands: [SubcommandDefinition]
-    var defaultSubcommand: String?
+public struct CommandDefinition {
+    public var options: [CommandOption]
+    public var requiredParameters: [ParameterInfo]
+    public var optionalParameters: [ParameterInfo]
+    public var hasFileParameters: Bool
+    public var help: String
+    public var subcommands: [SubcommandDefinition]
+    public var defaultSubcommand: String?
 
-    init() {
+    public init() {
         options = []
         requiredParameters = []
         optionalParameters = []
@@ -62,19 +62,19 @@ struct CommandDefinition {
     }
 }
 
-struct SubcommandDefinition {
-    var options: [CommandOption]
-    var requiredParameters: [ParameterInfo]
-    var optionalParameters: [ParameterInfo]
-    var hasFileParameters: Bool
-    var name: String
-    var synopsis: String
-    var help: String
-    var hidden: Bool
-    var suppressesOptions: Bool
-    var warnOnMissingSpec: Bool
+public struct SubcommandDefinition {
+    public var options: [CommandOption]
+    public var requiredParameters: [ParameterInfo]
+    public var optionalParameters: [ParameterInfo]
+    public var hasFileParameters: Bool
+    public var name: String
+    public var synopsis: String
+    public var help: String
+    public var hidden: Bool
+    public var suppressesOptions: Bool
+    public var warnOnMissingSpec: Bool
 
-    init() {
+    public init() {
         options = []
         requiredParameters = []
         optionalParameters = []
@@ -88,21 +88,21 @@ struct SubcommandDefinition {
     }
 }
 
-struct ParsedCommand {
-    var toolName: String
-    var subcommand: String?
-    var options: [ParsedOption]
-    var parameters: [String]
-    var warnOnMissingSpec: Bool
+public struct ParsedCommand {
+    public var toolName: String
+    public var subcommand: String?
+    public var options: [ParsedOption]
+    public var parameters: [String]
+    public var warnOnMissingSpec: Bool
 
-    init() {
+    public init() {
         toolName = ""
         options = []
         parameters = []
         warnOnMissingSpec = true
     }
 
-    func option(_ name: String) -> ParsedOption? {
+    public func option(_ name: String) -> ParsedOption? {
         var option: ParsedOption?
 
         option = self.options.first(where: { (option: ParsedOption) -> Bool in
@@ -116,23 +116,23 @@ struct ParsedCommand {
     }
 }
 
-enum ArgParserError: Error {
+public enum ArgParserError: Error {
     case invalidArguments
 }
 
-class ArgParser {
-    let definition: CommandDefinition
+open class ArgParser {
+    public let definition: CommandDefinition
 
-    var args: [String] = []
-    var parsed: ParsedCommand = ParsedCommand()
-    var subcommand: SubcommandDefinition?
-    var helpPrinted = false
+    public var args: [String] = []
+    public var parsed: ParsedCommand = ParsedCommand()
+    public var subcommand: SubcommandDefinition?
+    public var helpPrinted = false
 
-    init(definition inDefinition: CommandDefinition) {
+    public init(definition inDefinition: CommandDefinition) {
         definition = inDefinition
     }
 
-    func parse(_ inArgs: [String]) throws -> ParsedCommand {
+    public func parse(_ inArgs: [String]) throws -> ParsedCommand {
         args = inArgs.splittingShortArgs()
 
         if args.count == 1 {
@@ -325,7 +325,7 @@ class ArgParser {
         }
     }
 
-    func printHelp() {
+    public func printHelp() {
         let toolname = args[0].lastPathComponent
         if let sub = subcommand {
             print("Usage: \(toolname) [OPTIONS] \(sub.name) [ARGS]...")
