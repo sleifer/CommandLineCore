@@ -126,7 +126,8 @@ open class ArgParser {
     public var args: [String] = []
     public var parsed: ParsedCommand = ParsedCommand()
     public var subcommand: SubcommandDefinition?
-    public var helpPrinted = false
+    public var helpPrinted: Bool = false
+    var subcommandSet: Bool = false
 
     public init(definition inDefinition: CommandDefinition) {
         definition = inDefinition
@@ -152,7 +153,6 @@ open class ArgParser {
                 return first
             })
         }
-        var subcommandSet: Bool = false
 
         parsed.toolName = args[0]
 
@@ -327,7 +327,7 @@ open class ArgParser {
 
     public func printHelp() {
         let toolname = args[0].lastPathComponent
-        if let sub = subcommand {
+        if let sub = subcommand, subcommandSet == true {
             print("Usage: \(toolname) [OPTIONS] \(sub.name) [ARGS]...")
             print()
             print("\(sub.synopsis)")
@@ -341,7 +341,7 @@ open class ArgParser {
             print("\(definition.help)")
         }
         printGlobalHelp()
-        if let sub = subcommand {
+        if let sub = subcommand, subcommandSet == true {
             printSubcommandHelp(sub)
         } else {
             let subs = definition.subcommands.filter { (item) -> Bool in
