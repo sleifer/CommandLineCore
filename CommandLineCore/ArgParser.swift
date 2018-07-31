@@ -59,6 +59,29 @@ public struct CommandDefinition {
         hasFileParameters = false
         help = ""
         subcommands = []
+
+        subcommands.append(bashcompCommand())
+        subcommands.append(bashcompfileCommand())
+    }
+
+    func bashcompCommand() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "bashcomp"
+        command.hidden = true
+        command.suppressesOptions = true
+        command.warnOnMissingSpec = false
+
+        return command
+    }
+
+    func bashcompfileCommand() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "bashcompfile"
+        command.hidden = true
+        command.warnOnMissingSpec = false
+        command.hasFileParameters = true
+
+        return command
     }
 }
 
