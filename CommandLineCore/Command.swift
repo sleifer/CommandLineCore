@@ -11,7 +11,7 @@ import Foundation
 open class Command {
     public init() {
     }
-    
+
     open func run(cmd: ParsedCommand) {
     }
 }

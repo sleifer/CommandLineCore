@@ -37,7 +37,7 @@ open class BashcompCommand: Command {
                 if trailingOpt.hasFileArguments == true {
                     printFileCompletions()
                 }
-            } else if last.count > 0 && last[0] == "-" {
+            } else if last.count == 0 || last[0] == "-" {
                 var optNames = def.options.map { (opt) -> String in
                     return opt.longOption
                 }

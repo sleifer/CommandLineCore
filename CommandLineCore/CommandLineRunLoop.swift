@@ -14,7 +14,7 @@ open class CommandLineRunLoop {
     var backgroundCount: Int = 0
 
     public func waitForBackgroundTasks() {
-        while (backgroundCount > 0 && spinRunLoop() == true) {
+        while backgroundCount > 0 && spinRunLoop() == true {
             // do nothing
         }
     }

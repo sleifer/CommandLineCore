@@ -29,6 +29,7 @@
 		DB23F6EF211096230048E1E9 /* ProcessRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		DB23F6F9211098110048E1E9 /* CommandLineRunLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineRunLoop.swift; sourceTree = "<group>"; };
 		DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugLogFile.swift; sourceTree = "<group>"; };
+		DB7F4BF72115D0DC00795353 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +46,7 @@
 		DB23F6D4211095CA0048E1E9 = {
 			isa = PBXGroup;
 			children = (
+				DB7F4BF72115D0DC00795353 /* .swiftlint.yml */,
 				DB23F6DF211095CA0048E1E9 /* CommandLineCore */,
 				DB23F6DE211095CA0048E1E9 /* Products */,
 			);
@@ -94,6 +96,7 @@
 				DB23F6D9211095CA0048E1E9 /* Sources */,
 				DB23F6DA211095CA0048E1E9 /* Frameworks */,
 				DB23F6DB211095CA0048E1E9 /* Headers */,
+				DB7F4BF62115D08E00795353 /* swiftlint */,
 			);
 			buildRules = (
 			);
@@ -135,6 +138,24 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DB7F4BF62115D08E00795353 /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DB23F6D9211095CA0048E1E9 /* Sources */ = {
