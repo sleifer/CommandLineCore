@@ -9,22 +9,31 @@
 import Foundation
 
 public extension String {
-    func appendToURL(fileURL: URL) throws {
+    func append(toFileURL: URL) throws {
         let data = self.data(using: String.Encoding.utf8)!
-        try data.append(fileURL: fileURL)
+        try data.append(toFileURL: toFileURL)
+    }
+
+    func write(toFileURL: URL) throws {
+        let data = self.data(using: String.Encoding.utf8)!
+        try data.write(toFileURL: toFileURL)
     }
 }
 
 public extension Data {
-    func append(fileURL: URL) throws {
-        if let fileHandle = FileHandle(forWritingAtPath: fileURL.path) {
+    func append(toFileURL: URL) throws {
+        if let fileHandle = FileHandle(forWritingAtPath: toFileURL.path) {
             defer {
                 fileHandle.closeFile()
             }
             fileHandle.seekToEndOfFile()
             fileHandle.write(self)
         } else {
-            try write(to: fileURL, options: .atomic)
+            try write(to: toFileURL, options: .atomic)
         }
+    }
+
+    func write(toFileURL: URL) throws {
+        try write(to: toFileURL, options: .atomic)
     }
 }

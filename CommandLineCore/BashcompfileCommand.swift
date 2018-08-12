@@ -33,10 +33,33 @@ complete -o filenames -F _%@ %@
 """
 
     override open func run(cmd: ParsedCommand) {
-        print(String(format: format1, cmd.toolName))
-        print(String(format: format2, cmd.toolName, cmd.toolName))
+        var text = ""
+        text.append(String(format: format1, cmd.toolName))
+        text.append("\n")
+        text.append(String(format: format2, cmd.toolName, cmd.toolName))
+        text.append("\n")
         for param in cmd.parameters {
-            print(String(format: format2, cmd.toolName, param))
+            text.append(String(format: format2, cmd.toolName, param))
+            text.append("\n")
+        }
+
+        if cmd.option("--write") != nil {
+            let dir = "~/.bash_completion.d".expandingTildeInPath
+            let file = dir.appendingPathComponent(cmd.toolName)
+            if FileManager.default.fileExists(atPath: dir) == false {
+                print("~/.bash_completion.d is not set up, nothing written.")
+            } else {
+                do {
+                    let url = URL(fileURLWithPath: file)
+                    try text.write(toFileURL: url)
+                    print("Completion written to ~/.bash_completion.d/\(cmd.toolName)")
+                    print("Load with '. ~/.bash_completion.d/\(cmd.toolName)'")
+                } catch {
+                    print("Error writing to ~/.bash_completion.d/\(cmd.toolName)")
+                }
+            }
+        } else {
+            print(text)
         }
     }
 }

@@ -13,7 +13,7 @@ let logPathUrl = URL(fileURLWithPath: "~/Desktop/debug.txt".expandingTildeInPath
 public func debugLog(_ value: String) {
     let log = ">>> \(value)\n"
     do {
-        try log.appendToURL(fileURL: logPathUrl)
+        try log.append(toFileURL: logPathUrl)
     } catch {
         print(log)
     }
@@ -32,7 +32,7 @@ public func debugLog(_ value: [String], multiline: Bool = true) {
     }
     let log = ">>> \(items)\n"
     do {
-        try log.appendToURL(fileURL: logPathUrl)
+        try log.append(toFileURL: logPathUrl)
     } catch {
         print(log)
     }
@@ -51,7 +51,7 @@ public func debugLog(_ value: [String: String], multiline: Bool = true) {
     }
     let log = ">>> \(items)\n"
     do {
-        try log.appendToURL(fileURL: logPathUrl)
+        try log.append(toFileURL: logPathUrl)
     } catch {
         print(log)
     }

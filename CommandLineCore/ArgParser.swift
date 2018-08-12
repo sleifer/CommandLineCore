@@ -81,6 +81,12 @@ public struct CommandDefinition {
         command.warnOnMissingSpec = false
         command.hasFileParameters = true
 
+        var option = CommandOption()
+        option.longOption = "--write"
+        option.shortOption = "-w"
+        option.help = "Write to file in ~/.bash_completion.d"
+        command.options.append(option)
+
         return command
     }
 }
