@@ -1,23 +1,23 @@
 disabled_rules:
-- line_length
-- file_length
-- type_body_length
-- function_body_length
-- function_parameter_count
-- nesting
-- for_where
+    - line_length
+    - file_length
+    - type_body_length
+    - function_body_length
+    - function_parameter_count
+    - nesting
+    - for_where
 
 cyclomatic_complexity:
-warning: 12
+    warning: 12
 
 identifier_name:
-min_length:
-- 2
-- 2
+    min_length:
+        - 2
+        - 2
 
 large_tuple:
-warning: 4
-error: 5
+    warning: 4
+    error: 5
 
 excluded:
-- submodules
+    - submodules
