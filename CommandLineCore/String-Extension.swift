@@ -9,6 +9,14 @@
 import Foundation
 
 public extension String {
+    var fullPath: String {
+        let normal = self.expandingTildeInPath.standardizingPath
+        if normal.hasPrefix("/") {
+            return normal
+        }
+        return FileManager.default.currentDirectoryPath.appendingPathComponent(normal)
+    }
+
     var expandingTildeInPath: String {
         return NSString(string: self).expandingTildeInPath
     }
