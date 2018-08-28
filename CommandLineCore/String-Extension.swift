@@ -29,6 +29,10 @@ public extension String {
         return NSString(string: self).lastPathComponent
     }
 
+    var pathExtension: String {
+        return NSString(string: self).pathExtension
+    }
+
     var standardizingPath: String {
         return NSString(string: self).standardizingPath
     }
