@@ -59,6 +59,29 @@ public extension String {
         return String(substr)
     }
 
+    func prefix(_ maxLength: Int) -> String {
+        return String(self.prefix(maxLength))
+    }
+
+    func prefix(through position: Int) -> String {
+        let index = self.index(self.startIndex, offsetBy: position)
+        return String(self.prefix(through: index))
+    }
+
+    func prefix(upTo end: Int) -> String {
+        let index = self.index(self.startIndex, offsetBy: end)
+        return String(self.prefix(upTo: index))
+    }
+
+    func suffix(_ maxLength: Int) -> String {
+        return String(self.suffix(maxLength))
+    }
+
+    func suffix(from start: Int) -> String {
+        let index = self.index(self.startIndex, offsetBy: start)
+        return String(self.suffix(from: index))
+    }
+
     func regex(_ pattern: String) -> [[String]] {
         var matches: [[String]] = []
         do {
