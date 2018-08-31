@@ -25,6 +25,38 @@ public extension String {
         return NSString(string: self).deletingLastPathComponent
     }
 
+    var deletingPathExtension: String {
+        return NSString(string: self).deletingPathExtension
+    }
+
+    func appendingPathExtension(_ str: String) -> String? {
+        return NSString(string: self).appendingPathExtension(str)
+    }
+
+    func hasFileSuffix(_ str: String) -> Bool {
+        return self.deletingPathExtension.hasSuffix(str)
+    }
+
+    func changeFileSuffix(from: String, to: String) -> String {
+        let ext = self.pathExtension
+        let base = self.deletingPathExtension
+        if base.hasSuffix(from) {
+            if let newStr = base.prefix(upTo: base.count - from.count).appending(to).appendingPathExtension(ext) {
+                return newStr
+            }
+        }
+        return self
+    }
+
+    func changeFileExtension(from: String, to: String) -> String {
+        if self.pathExtension == from {
+            if let newStr = self.deletingPathExtension.appendingPathExtension(to) {
+                return newStr
+            }
+        }
+        return self
+    }
+
     var lastPathComponent: String {
         return NSString(string: self).lastPathComponent
     }
