@@ -48,6 +48,13 @@ public extension String {
         return self
     }
 
+    func changeFileExtension(to: String) -> String {
+        if let newStr = self.deletingPathExtension.appendingPathExtension(to) {
+            return newStr
+        }
+        return self
+    }
+
     func changeFileExtension(from: String, to: String) -> String {
         if self.pathExtension == from {
             if let newStr = self.deletingPathExtension.appendingPathExtension(to) {
