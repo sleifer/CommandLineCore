@@ -19,12 +19,12 @@ open class ProcessRunner {
     public var stdErr: String = ""
     public var echo: Bool = false
 
-    public init(_ cmd: String, args: [String]) {
+    internal init(_ cmd: String, args: [String]) {
         command = cmd
         arguments = args
     }
 
-    public func start(_ completion: ProcessRunnerHandler? = nil) {
+    internal func start(_ completion: ProcessRunnerHandler? = nil) {
         let proc = Process()
         process = proc
         proc.launchPath = command
