@@ -110,10 +110,6 @@ public extension String {
         return String(substr)
     }
 
-    func prefix(_ maxLength: Int) -> String {
-        return String(self.prefix(maxLength))
-    }
-
     func prefix(through position: Int) -> String {
         let index = self.index(self.startIndex, offsetBy: position)
         return String(self.prefix(through: index))
@@ -122,10 +118,6 @@ public extension String {
     func prefix(upTo end: Int) -> String {
         let index = self.index(self.startIndex, offsetBy: end)
         return String(self.prefix(upTo: index))
-    }
-
-    func suffix(_ maxLength: Int) -> String {
-        return String(self.suffix(maxLength))
     }
 
     func suffix(from start: Int) -> String {

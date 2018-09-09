@@ -21,7 +21,7 @@ open class CommandLineRunLoop {
 
     @discardableResult
     public func spinRunLoop() -> Bool {
-        return RunLoop.current.run(mode: .defaultRunLoopMode, before: Date(timeIntervalSinceNow: 2))
+        return RunLoop.current.run(mode: RunLoop.Mode.default, before: Date(timeIntervalSinceNow: 2))
     }
 
     public func startBackgroundTask() {
