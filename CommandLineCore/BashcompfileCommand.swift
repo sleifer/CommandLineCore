@@ -32,7 +32,10 @@ _%@()
 complete -o filenames -F _%@ %@
 """
 
-    override open func run(cmd: ParsedCommand) {
+    required public init() {
+    }
+
+    open func run(cmd: ParsedCommand, core: CommandCore) {
         var text = ""
         text.append(String(format: format1, cmd.toolName))
         text.append("\n")
@@ -61,5 +64,21 @@ complete -o filenames -F _%@ %@
         } else {
             print(text)
         }
+    }
+
+    public static func commandDefinition() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "bashcompfile"
+        command.hidden = true
+        command.warnOnMissingSpec = false
+        command.hasFileParameters = true
+
+        var option = CommandOption()
+        option.longOption = "--write"
+        option.shortOption = "-w"
+        option.help = "Write to file in ~/.bash_completion.d"
+        command.options.append(option)
+
+        return command
     }
 }

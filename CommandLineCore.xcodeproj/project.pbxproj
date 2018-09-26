@@ -18,6 +18,7 @@
 		DB23F6FF211099CA0048E1E9 /* DebugLogFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */; };
 		DB8031FC215B1CB100DF1991 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8031FB215B1CB100DF1991 /* main.swift */; };
 		DB803201215B1CC500DF1991 /* libCommandLineCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB23F6DD211095CA0048E1E9 /* libCommandLineCore.a */; };
+		DB803203215B2A4C00DF1991 /* CommandCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB803202215B2A4C00DF1991 /* CommandCore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +47,7 @@
 		DB7F4BF72115D0DC00795353 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		DB8031F9215B1CB100DF1991 /* CLCTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLCTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8031FB215B1CB100DF1991 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DB803202215B2A4C00DF1991 /* CommandCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				DB23F6E9211096230048E1E9 /* BashcompCommand.swift */,
 				DB23F6EE211096230048E1E9 /* BashcompfileCommand.swift */,
 				DB23F6EA211096230048E1E9 /* Command.swift */,
+				DB803202215B2A4C00DF1991 /* CommandCore.swift */,
 				DB23F6F9211098110048E1E9 /* CommandLineRunLoop.swift */,
 				DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */,
 				DB23F6EF211096230048E1E9 /* ProcessRunner.swift */,
@@ -228,6 +231,7 @@
 			files = (
 				DB23F6F5211096230048E1E9 /* BashcompfileCommand.swift in Sources */,
 				DB23F6FF211099CA0048E1E9 /* DebugLogFile.swift in Sources */,
+				DB803203215B2A4C00DF1991 /* CommandCore.swift in Sources */,
 				DB23F6FA211098110048E1E9 /* CommandLineRunLoop.swift in Sources */,
 				DB23F6F0211096230048E1E9 /* BashcompCommand.swift in Sources */,
 				DB23F6F4211096230048E1E9 /* StringWriting.swift in Sources */,

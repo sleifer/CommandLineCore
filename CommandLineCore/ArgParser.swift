@@ -59,35 +59,6 @@ public struct CommandDefinition {
         hasFileParameters = false
         help = ""
         subcommands = []
-
-        subcommands.append(bashcompCommand())
-        subcommands.append(bashcompfileCommand())
-    }
-
-    func bashcompCommand() -> SubcommandDefinition {
-        var command = SubcommandDefinition()
-        command.name = "bashcomp"
-        command.hidden = true
-        command.suppressesOptions = true
-        command.warnOnMissingSpec = false
-
-        return command
-    }
-
-    func bashcompfileCommand() -> SubcommandDefinition {
-        var command = SubcommandDefinition()
-        command.name = "bashcompfile"
-        command.hidden = true
-        command.warnOnMissingSpec = false
-        command.hasFileParameters = true
-
-        var option = CommandOption()
-        option.longOption = "--write"
-        option.shortOption = "-w"
-        option.help = "Write to file in ~/.bash_completion.d"
-        command.options.append(option)
-
-        return command
     }
 }
 
@@ -165,11 +136,6 @@ open class ArgParser {
     public func parse(_ inArgs: [String]) throws -> ParsedCommand {
         args = inArgs.splittingShortArgs()
 
-        if args.count == 1 {
-            printHelp()
-            helpPrinted = true
-        }
-
         var availableOptions = optionMap(definition.options)
         let availableSubcommands = subcommandMap(definition.subcommands)
         subcommand = nil
@@ -181,6 +147,11 @@ open class ArgParser {
             availableOptions = availableOptions.merging(subOptions, uniquingKeysWith: { (first, _) -> CommandOption in
                 return first
             })
+        }
+
+        if subcommand == nil && args.count == 1 {
+            printHelp()
+            helpPrinted = true
         }
 
         parsed.toolName = args[0]

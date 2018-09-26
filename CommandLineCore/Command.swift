@@ -8,10 +8,8 @@
 
 import Foundation
 
-open class Command {
-    public init() {
-    }
-
-    open func run(cmd: ParsedCommand) {
-    }
+public protocol Command: class {
+    init()
+    func run(cmd: ParsedCommand, core: CommandCore)
+    static func commandDefinition() -> SubcommandDefinition
 }

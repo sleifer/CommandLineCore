@@ -9,18 +9,14 @@
 import Foundation
 
 open class BashcompCommand: Command {
-    var parser: ArgParser?
-
-    public convenience init(parser: ArgParser) {
-        self.init()
-        self.parser = parser
+    required public init() {
     }
 
-    override open func run(cmd: ParsedCommand) {
+    open func run(cmd: ParsedCommand, core: CommandCore) {
         let last = cmd.parameters.last ?? ""
         let args = Array(cmd.parameters.dropLast())
 
-        if let def = parser?.definition {
+        if let def = core.parser?.definition {
             let trailingSub = def.trailingSubcommand(for: args)
             if trailingSub == nil {
                 let subs = def.subcommands.filter { (sub) -> Bool in
@@ -55,6 +51,16 @@ open class BashcompCommand: Command {
                 printFileCompletions()
             }
         }
+    }
+
+    public static func commandDefinition() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "bashcomp"
+        command.hidden = true
+        command.suppressesOptions = true
+        command.warnOnMissingSpec = false
+
+        return command
     }
 
     func printFileCompletions() {
