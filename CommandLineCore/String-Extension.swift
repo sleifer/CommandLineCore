@@ -146,4 +146,21 @@ public extension String {
         }
         return matches
     }
+
+    func components(separatedBy separator: String) -> [String] {
+        return NSString(string: self).components(separatedBy: separator)
+    }
+
+    func lines(skippingBlanks: Bool = true) -> [String] {
+        var lines = self.components(separatedBy: CharacterSet.newlines)
+        if skippingBlanks == true {
+            lines = lines.filter { (str: String) -> Bool in
+                if str.count > 0 {
+                    return true
+                }
+                return false
+            }
+        }
+        return lines
+    }
 }
