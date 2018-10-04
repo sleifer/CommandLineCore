@@ -17,7 +17,7 @@ open class BashcompCommand: Command {
         let args = Array(cmd.parameters.dropLast())
 
         if let def = core.parser?.definition {
-            let trailingSub = def.trailingSubcommand(for: args)
+            var trailingSub = def.trailingSubcommand(for: args)
             if trailingSub == nil {
                 let subs = def.subcommands.filter { (sub) -> Bool in
                     return sub.hidden == false
@@ -28,6 +28,8 @@ open class BashcompCommand: Command {
                 for item in cmdNames {
                     print(item)
                 }
+
+                trailingSub = def.defaultSubcommandDefinition()
             }
             if let trailingOpt = def.trailingOption(for: args) {
                 if trailingOpt.hasFileArguments == true {
@@ -69,6 +71,21 @@ open class BashcompCommand: Command {
 }
 
 extension CommandDefinition {
+    func defaultSubcommandDefinition() -> SubcommandDefinition? {
+        if let defCmd = self.defaultSubcommand {
+            let matches = self.subcommands.filter { (def) -> Bool in
+                if def.name == defCmd {
+                    return true
+                }
+                return false
+            }
+            if matches.count > 0 {
+                return matches[0]
+            }
+        }
+        return nil
+    }
+
     func trailingSubcommand(for args: [String]) -> SubcommandDefinition? {
         for arg in args {
             let matches = self.subcommands.filter { (def) -> Bool in
@@ -97,7 +114,7 @@ extension CommandDefinition {
                 return matches[0]
             }
         }
-        if let sub = trailingSubcommand(for: args) {
+        if let sub = trailingSubcommand(for: args) ?? defaultSubcommandDefinition() {
             for (idx, arg) in rargs.enumerated() {
                 let matches = sub.options.filter { (opt) -> Bool in
                     if opt.longOption == arg {
@@ -114,7 +131,7 @@ extension CommandDefinition {
     }
 
     func hasTrailingFileParameter(for args: [String]) -> Bool {
-        if let sub = trailingSubcommand(for: args) {
+        if let sub = trailingSubcommand(for: args) ?? defaultSubcommandDefinition() {
             return sub.hasFileParameters
         } else {
             return self.hasFileParameters

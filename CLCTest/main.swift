@@ -67,6 +67,11 @@ class CleanupCommand: Command {
         realm.help = "Delete Realm sync_bin."
         command.options.append(realm)
 
+        var opt = ParameterInfo()
+        opt.help = "file param"
+        command.optionalParameters.append(opt)
+        command.hasFileParameters = true
+
         return command
     }
 }
@@ -92,14 +97,35 @@ func main() {
 
     core.add(command: CleanupCommand.self)
 
+    #if false
     #if DEBUG
     // for testing in Xcode
-    let args = ["pt"]
+    let args = ["pt", "bashcomp", "cleanup", ""]
     #else
     let args = CommandLine.arguments
     #endif
 
     core.process(args: args)
+    #else
+    core.set(defaultCommand: "cleanup")
+
+    print("TEST A")
+    core.process(args: ["pt", "bashcomp", "cleanup", ""])
+    print("TEST B")
+    core.process(args: ["pt", "bashcomp", ""])
+    print("TEST C")
+    core.process(args: ["pt", "bashcomp"])
+
+    core.set(defaultCommand: nil)
+
+    print("TEST D")
+    core.process(args: ["pt", "bashcomp", "cleanup", ""])
+    print("TEST E")
+    core.process(args: ["pt", "bashcomp", ""])
+    print("TEST F")
+    core.process(args: ["pt", "bashcomp"])
+
+    #endif
 }
 
 main()
