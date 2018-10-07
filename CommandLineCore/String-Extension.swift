@@ -21,6 +21,10 @@ public extension String {
         return NSString(string: self).expandingTildeInPath
     }
 
+    var abbreviatingWithTildeInPath: String {
+        return NSString(string: self).abbreviatingWithTildeInPath
+    }
+
     var deletingLastPathComponent: String {
         return NSString(string: self).deletingLastPathComponent
     }
