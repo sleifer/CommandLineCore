@@ -97,7 +97,6 @@ func main() {
 
     core.add(command: CleanupCommand.self)
 
-    #if false
     #if DEBUG
     // for testing in Xcode
     let args = ["pt", "bashcomp", "cleanup", ""]
@@ -106,26 +105,6 @@ func main() {
     #endif
 
     core.process(args: args)
-    #else
-    core.set(defaultCommand: "cleanup")
-
-    print("TEST A")
-    core.process(args: ["pt", "bashcomp", "cleanup", ""])
-    print("TEST B")
-    core.process(args: ["pt", "bashcomp", ""])
-    print("TEST C")
-    core.process(args: ["pt", "bashcomp"])
-
-    core.set(defaultCommand: nil)
-
-    print("TEST D")
-    core.process(args: ["pt", "bashcomp", "cleanup", ""])
-    print("TEST E")
-    core.process(args: ["pt", "bashcomp", ""])
-    print("TEST F")
-    core.process(args: ["pt", "bashcomp"])
-
-    #endif
 }
 
 main()

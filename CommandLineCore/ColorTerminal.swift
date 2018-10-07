@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ANSIColor: String, CaseIterable {
+public enum ANSIColor: String, CaseIterable {
     case black = "\u{001B}[30m"
     case red = "\u{001B}[31m"
     case green = "\u{001B}[32m"
@@ -50,14 +50,29 @@ enum ANSIColor: String, CaseIterable {
     case reset = "\u{001B}[0m"
 }
 
-func + (left: ANSIColor, right: ANSIColor) -> String {
+public var haveANSIColor: Bool = {
+    let istty = isatty(fileno(stdout))
+    let xcode = ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"]
+    return istty == 1 && xcode == nil
+}()
+
+public func + (left: ANSIColor, right: ANSIColor) -> String {
+    if haveANSIColor == false {
+        return ""
+    }
     return left.rawValue + right.rawValue
 }
 
-func + (left: ANSIColor, right: String) -> String {
+public func + (left: ANSIColor, right: String) -> String {
+    if haveANSIColor == false {
+        return right
+    }
     return left.rawValue + right
 }
 
-func + (left: String, right: ANSIColor) -> String {
+public func + (left: String, right: ANSIColor) -> String {
+    if haveANSIColor == false {
+        return left
+    }
     return left + right.rawValue
 }
