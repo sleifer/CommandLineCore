@@ -154,7 +154,7 @@ open class ArgParser {
             helpPrinted = true
         }
 
-        parsed.toolName = args[0]
+        parsed.toolName = args[0].lastPathComponent
 
         let sargs = Array(args.dropFirst())
         let cnt = sargs.count
