@@ -12,9 +12,13 @@ open class BashcompCommand: Command {
     required public init() {
     }
 
+    var items: [String] = []
+
     open func run(cmd: ParsedCommand, core: CommandCore) {
         let last = cmd.parameters.last ?? ""
         let args = Array(cmd.parameters.dropLast())
+
+        items.removeAll()
 
         if let def = core.parser?.definition {
             var trailingSub = def.trailingSubcommand(for: args)
@@ -26,16 +30,17 @@ open class BashcompCommand: Command {
                     return sub.name
                 })
                 for item in cmdNames {
-                    print(item)
+                    items.append(item)
                 }
 
                 trailingSub = def.defaultSubcommandDefinition()
             }
+            let hasFileParams = def.hasTrailingFileParameter(for: args)
             if let trailingOpt = def.trailingOption(for: args) {
                 if trailingOpt.hasFileArguments == true {
                     printFileCompletions()
                 }
-            } else if last.count == 0 || last[0] == "-" {
+            } else if (last.count == 0 && hasFileParams == false) || (last.count > 0 && last[0] == "-") {
                 var optNames = def.options.map { (opt) -> String in
                     return opt.longOption
                 }
@@ -46,12 +51,16 @@ open class BashcompCommand: Command {
                     optNames = Array(Set(optNames).union(Set(subOptNames)))
                 }
                 for item in optNames {
-                    print(item)
+                    items.append(item)
                 }
             }
-            if def.hasTrailingFileParameter(for: args) {
+            if hasFileParams == true {
                 printFileCompletions()
             }
+        }
+
+        for item in items {
+            print(item)
         }
     }
 
@@ -66,7 +75,9 @@ open class BashcompCommand: Command {
     }
 
     func printFileCompletions() {
-        print("!files!")
+        if items.count == 0 {
+            items.append("!files!")
+        }
     }
 }
 
