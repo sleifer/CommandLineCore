@@ -144,8 +144,7 @@ extension CommandDefinition {
     func hasTrailingFileParameter(for args: [String]) -> Bool {
         if let sub = trailingSubcommand(for: args) ?? defaultSubcommandDefinition() {
             return sub.hasFileParameters
-        } else {
-            return self.hasFileParameters
         }
+        return false
     }
 }

@@ -45,18 +45,12 @@ public struct ParameterInfo {
 
 public struct CommandDefinition {
     public var options: [CommandOption]
-    public var requiredParameters: [ParameterInfo]
-    public var optionalParameters: [ParameterInfo]
-    public var hasFileParameters: Bool
     public var help: String
     public var subcommands: [SubcommandDefinition]
     public var defaultSubcommand: String?
 
     public init() {
         options = []
-        requiredParameters = []
-        optionalParameters = []
-        hasFileParameters = false
         help = ""
         subcommands = []
     }
@@ -248,28 +242,6 @@ open class ArgParser {
             let pad = String(repeating: " ", count: max(maxOptionLength, maxArgCountLength))
             for optionInfo in optionStrings {
                 print("\(optionInfo[0].padding(toLength: maxOptionLength, withPad: pad, startingAt: 0)) \(optionInfo[1].padding(toLength: maxArgCountLength, withPad: pad, startingAt: 0)) \(optionInfo[2])")
-            }
-        }
-        if definition.requiredParameters.count > 0 {
-            print()
-            print("Required Parameters:")
-            let maxHintLength = definition.requiredParameters.map({ (item) -> String in
-                return item.hint
-            }).maxCount()
-            let pad = String(repeating: " ", count: maxHintLength)
-            for param in definition.requiredParameters {
-                print("\(param.hint.padding(toLength: maxHintLength, withPad: pad, startingAt: 0))    \(param.help)")
-            }
-        }
-        if definition.optionalParameters.count > 0 {
-            print()
-            print("Optional Parameters:")
-            let maxHintLength = definition.optionalParameters.map({ (item) -> String in
-                return item.hint
-            }).maxCount()
-            let pad = String(repeating: " ", count: maxHintLength)
-            for param in definition.optionalParameters {
-                print("\(param.hint.padding(toLength: maxHintLength, withPad: pad, startingAt: 0))    \(param.help)")
             }
         }
     }
