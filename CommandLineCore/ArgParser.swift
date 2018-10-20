@@ -36,10 +36,12 @@ public struct ParsedOption {
 public struct ParameterInfo {
     public var hint: String
     public var help: String
+    public var completions: [String]
 
     public init() {
         hint = ""
         help = ""
+        completions = []
     }
 }
 

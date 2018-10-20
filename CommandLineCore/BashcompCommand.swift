@@ -54,6 +54,11 @@ open class BashcompCommand: Command {
                     items.append(item)
                 }
             }
+            if let param = def.trailingParameter(for: args) {
+                for item in param.completions {
+                    items.append(item)
+                }
+            }
             if hasFileParams == true {
                 printFileCompletions()
             }
@@ -138,6 +143,70 @@ extension CommandDefinition {
                 }
             }
         }
+        return nil
+    }
+
+    func trailingParameter(for args: [String]) -> ParameterInfo? {
+        if trailingOption(for: args) != nil {
+            return nil
+        }
+        var subcommandFound: Bool = false
+        var parametersFound: Int = 0
+        var allOptions = self.options
+        var allParameters: [ParameterInfo] = []
+        if let sub = trailingSubcommand(for: args) ?? defaultSubcommandDefinition() {
+            allOptions.append(contentsOf: sub.options)
+            allParameters.append(contentsOf: sub.requiredParameters)
+            allParameters.append(contentsOf: sub.optionalParameters)
+        }
+
+        let count = args.count
+        var index: Int = 0
+        while index < count {
+            let arg = args[index]
+
+            // subcommand
+            if subcommandFound == false {
+                let matches = self.subcommands.filter { (def) -> Bool in
+                    if def.name == arg {
+                        return true
+                    }
+                    return false
+                }
+                if matches.count > 0 {
+                    subcommandFound = true
+                    index += 1
+                    continue
+                }
+            }
+
+            // options
+            let matches = allOptions.filter { (opt) -> Bool in
+                if opt.longOption == arg {
+                    return true
+                }
+                return false
+            }
+            if matches.count > 0 {
+                index += matches[0].argumentCount + 1
+                continue
+            }
+
+            // parameters
+            if arg.count != 0 {
+                parametersFound += 1
+            }
+            index += 1
+        }
+
+        if allParameters.count > 0 {
+            if parametersFound >= allParameters.count {
+                return allParameters.last
+            } else {
+                return allParameters[parametersFound]
+            }
+        }
+
         return nil
     }
 
