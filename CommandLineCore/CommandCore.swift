@@ -9,6 +9,8 @@
 import Foundation
 
 open class CommandCore {
+    public static var core: CommandCore?
+
     public private(set) var version: String
     public private(set) var commandName: String
     public private(set) var baseDirectory: String
@@ -25,6 +27,10 @@ open class CommandCore {
         commandMap = [:]
         addDefaultGlobalOptions()
         addInternalCommands()
+
+        if CommandCore.core == nil {
+            CommandCore.core = self
+        }
     }
 
     func addDefaultGlobalOptions() {
