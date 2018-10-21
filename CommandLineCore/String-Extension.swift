@@ -168,3 +168,35 @@ public extension String {
         return lines
     }
 }
+
+public extension Collection where Element == String {
+    func maxCount() -> Int {
+        var maxCount = 0
+        for item in self {
+            let count = item.count
+            if count > maxCount {
+                maxCount = count
+            }
+        }
+        return maxCount
+    }
+
+    func equalLengthPad(onLeft: Bool = false, with padChar: String = " ") -> [String] {
+        var result: [String] = []
+        let maxLength = self.maxCount()
+        let pad = String(repeating: padChar, count: maxLength)
+        for item in self {
+            let count = maxLength - item.count
+            let index = pad.index(pad.startIndex, offsetBy: count)
+            let onePad = String(pad.prefix(upTo: index))
+            let newItem: String
+            if onLeft == true {
+                newItem = onePad + item
+            } else {
+                newItem = item + onePad
+            }
+            result.append(newItem)
+        }
+        return result
+    }
+}

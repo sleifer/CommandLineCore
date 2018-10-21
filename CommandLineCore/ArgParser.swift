@@ -324,12 +324,13 @@ open class ArgParser {
             if subs.count > 0 {
                 print()
                 print("Commands:")
-                let maxNameLength = subs.map({ (item: SubcommandDefinition) -> String in
-                    return item.name
-                }).maxCount()
-                let pad = String(repeating: " ", count: maxNameLength)
-                for sub in subs {
-                    print("\(sub.name.padding(toLength: maxNameLength, withPad: pad, startingAt: 0))    \(sub.synopsis)")
+                let items = subs.equalLengthPad(padding: { (subdef) -> String in
+                    return subdef.name
+                }, compose: { (text, subdef) -> String in
+                    return "\(text)    \(subdef.synopsis)"
+                })
+                for item in items {
+                    print(item)
                 }
             }
         }
@@ -337,17 +338,6 @@ open class ArgParser {
 }
 
 extension Collection where Element == String {
-    func maxCount() -> Int {
-        var maxCount = 0
-        for item in self {
-            let count = item.count
-            if count > maxCount {
-                maxCount = count
-            }
-        }
-        return maxCount
-    }
-
     func splittingShortArgs() -> [String] {
         return self.map { (item) -> [String] in
             var items: [String] = []
