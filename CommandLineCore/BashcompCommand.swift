@@ -15,8 +15,9 @@ open class BashcompCommand: Command {
     var items: [String] = []
 
     open func run(cmd: ParsedCommand, core: CommandCore) {
-        let last = cmd.parameters.last ?? ""
-        let args = Array(cmd.parameters.dropLast())
+        let allArgs = cmd.parameters
+        let last = allArgs.last ?? ""
+        let args = Array(allArgs.dropLast())
 
         items.removeAll()
 
@@ -54,7 +55,7 @@ open class BashcompCommand: Command {
                     items.append(item)
                 }
             }
-            if let param = def.trailingParameter(for: args) {
+            if let param = def.trailingParameter(for: args, trailing: last.count == 0) {
                 for item in param.completions {
                     items.append(item)
                 }
@@ -146,7 +147,7 @@ extension CommandDefinition {
         return nil
     }
 
-    func trailingParameter(for args: [String]) -> ParameterInfo? {
+    func trailingParameter(for args: [String], trailing: Bool) -> ParameterInfo? {
         if trailingOption(for: args) != nil {
             return nil
         }
@@ -199,11 +200,17 @@ extension CommandDefinition {
             index += 1
         }
 
+        if trailing == true {
+            parametersFound += 1
+        }
+
         if allParameters.count > 0 {
             if parametersFound >= allParameters.count {
                 return allParameters.last
-            } else {
+            } else if parametersFound == 0 {
                 return allParameters[parametersFound]
+            } else {
+                return allParameters[parametersFound-1]
             }
         }
 
