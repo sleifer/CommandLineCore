@@ -169,10 +169,7 @@ extension CommandDefinition {
             // subcommand
             if subcommandFound == false {
                 let matches = self.subcommands.filter { (def) -> Bool in
-                    if def.name == arg {
-                        return true
-                    }
-                    return false
+                    return def.name == arg
                 }
                 if matches.count > 0 {
                     subcommandFound = true
@@ -183,10 +180,7 @@ extension CommandDefinition {
 
             // options
             let matches = allOptions.filter { (opt) -> Bool in
-                if opt.longOption == arg {
-                    return true
-                }
-                return false
+                return opt.longOption == arg
             }
             if matches.count > 0 {
                 index += matches[0].argumentCount + 1
