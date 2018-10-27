@@ -102,15 +102,15 @@ open class ProcessRunner {
     }
 
     @discardableResult
-    public class func runCommand(_ args: [String], echo: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ args: [String], echoCommand: Bool = false, echo: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let cmd = args[0]
         var sargs = args
         sargs.remove(at: 0)
-        return runCommand(cmd, args: sargs, echo: echo, completion: completion)
+        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echo: echo, completion: completion)
     }
 
     @discardableResult
-    public class func runCommand(_ cmd: String, args: [String], echo: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ cmd: String, args: [String], echoCommand: Bool = false, echo: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let fullCmd: String
         if cmd == whichCmd {
             fullCmd = cmd
@@ -120,6 +120,11 @@ open class ProcessRunner {
         let runner = ProcessRunner(fullCmd, args: args)
         if cmd != whichCmd {
             runner.echo = echo
+            if echoCommand == true {
+                print("---")
+                print("\(cmd) \(args.joined(separator: " "))")
+                print("---")
+            }
         }
         var done: Bool = false
         runner.start { (runner) in
