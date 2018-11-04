@@ -162,7 +162,7 @@ open class ArgParser {
                 option.longOption = value.longOption
                 idx += 1
                 if value.argumentCount > 0 {
-                    if cnt - idx <= value.argumentCount {
+                    if cnt - idx >= value.argumentCount {
                         for _ in 0..<value.argumentCount {
                             option.arguments.append(sargs[idx])
                             idx += 1
