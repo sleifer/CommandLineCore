@@ -18,6 +18,9 @@ open class ProcessRunner {
     public var stdOut: String = ""
     public var stdErr: String = ""
     public var echo: Bool = false
+    public var commandString: String {
+        return "\(command) \(arguments.joined(separator: " "))"
+    }
 
     internal init(_ cmd: String, args: [String]) {
         command = cmd
@@ -126,6 +129,7 @@ open class ProcessRunner {
         }
 
         if dryrun == true {
+            runner.status = 0
             if let completion = completion {
                 completion(runner)
             }
