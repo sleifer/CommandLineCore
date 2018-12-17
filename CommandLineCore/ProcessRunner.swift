@@ -41,7 +41,9 @@ open class ProcessRunner {
             outPipe.fileHandleForReading.readabilityHandler = { [weak self] (handle) in
                 let outData = handle.availableData
                 if let str = String(data: outData, encoding: .utf8) {
-                    print(str, terminator: "")
+                    if str.trimmed().count > 0 {
+                        print(str, terminator: "")
+                    }
                     self?.stdOut.append(str)
                 }
             }
@@ -49,7 +51,9 @@ open class ProcessRunner {
             errPipe.fileHandleForReading.readabilityHandler = { [weak self] (handle) in
                 let outData = handle.availableData
                 if let str = String(data: outData, encoding: .utf8) {
-                    print(str, terminator: "")
+                    if str.trimmed().count > 0 {
+                        print(str, terminator: "")
+                    }
                     self?.stdErr.append(str)
                 }
             }
@@ -61,7 +65,9 @@ open class ProcessRunner {
             let outData = outPipe.fileHandleForReading.readDataToEndOfFile()
             if let str = String(data: outData, encoding: .utf8) {
                 if self.echo == true {
-                    print(str)
+                    if str.trimmed().count > 0 {
+                        print(str)
+                    }
                 }
                 self.stdOut.append(str)
             }
@@ -69,7 +75,9 @@ open class ProcessRunner {
             let errData = errPipe.fileHandleForReading.readDataToEndOfFile()
             if let str = String(data: errData, encoding: .utf8) {
                 if self.echo == true {
-                    print(str)
+                    if str.trimmed().count > 0 {
+                        print(str)
+                    }
                 }
                 self.stdErr.append(str)
             }
