@@ -33,6 +33,10 @@ public extension String {
         return NSString(string: self).deletingPathExtension
     }
 
+    func replacingOccurrences(of target: String, with replacement: String) -> String {
+        return NSString(string: self).replacingOccurrences(of: target, with: replacement)
+    }
+
     func appendingPathExtension(_ str: String) -> String? {
         return NSString(string: self).appendingPathExtension(str)
     }
