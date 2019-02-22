@@ -14,6 +14,8 @@ open class BashcompCommand: Command {
 
     var items: [String] = []
 
+    // swiftlint:disable cyclomatic_complexity
+
     open func run(cmd: ParsedCommand, core: CommandCore) {
         let allArgs = cmd.parameters
         let last = allArgs.last ?? ""
@@ -56,8 +58,15 @@ open class BashcompCommand: Command {
                 }
             }
             if let param = def.trailingParameter(for: args, trailing: last.count == 0) {
-                for item in param.completions {
-                    items.append(item)
+                if let callback = param.completionCallback {
+                    let completions = callback()
+                    for item in completions {
+                        items.append(item)
+                    }
+                } else {
+                    for item in param.completions {
+                        items.append(item)
+                    }
                 }
             }
             if hasFileParams == true {
@@ -69,6 +78,8 @@ open class BashcompCommand: Command {
             print(item)
         }
     }
+
+    // swiftlint:enable cyclomatic_complexity
 
     public static func commandDefinition() -> SubcommandDefinition {
         var command = SubcommandDefinition()

@@ -71,8 +71,12 @@ class CleanupCommand: Command {
 
         var opt = ParameterInfo()
         opt.help = "file param"
+//        opt.completions = ["alpha", "bravo", "charlie"]
+        opt.completionCallback = { () -> [String] in
+            return ["delta", "echo", "foxtrot"]
+        }
         command.optionalParameters.append(opt)
-        command.hasFileParameters = true
+//        command.hasFileParameters = true
 
         return command
     }
@@ -101,7 +105,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["pt", "bashcomp", "cleanup", "-r", "gg", ""]
+    let args = ["pt", "bashcomp", "cleanup", ""]
     #else
     let args = CommandLine.arguments
     #endif

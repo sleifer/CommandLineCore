@@ -37,6 +37,7 @@ public struct ParameterInfo {
     public var hint: String
     public var help: String
     public var completions: [String]
+    public var completionCallback: (() -> [String])?
 
     public init() {
         hint = ""
