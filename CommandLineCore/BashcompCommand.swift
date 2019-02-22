@@ -42,6 +42,17 @@ open class BashcompCommand: Command {
             if let trailingOpt = def.trailingOption(for: args) {
                 if trailingOpt.hasFileArguments == true {
                     printFileCompletions()
+                } else {
+                    if let callback = trailingOpt.completionCallback {
+                        let completions = callback()
+                        for item in completions {
+                            items.append(item)
+                        }
+                    } else {
+                        for item in trailingOpt.completions {
+                            items.append(item)
+                        }
+                    }
                 }
             } else if (last.count == 0 && hasFileParams == false) || (last.count > 0 && last[0] == "-") {
                 var optNames = def.options.map { (opt) -> String in

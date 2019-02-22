@@ -12,12 +12,15 @@ public struct CommandOption {
     public var shortOption: String?
     public var longOption: String
     public var argumentCount: Int
+    public var completions: [String]
+    public var completionCallback: (() -> [String])?
     public var hasFileArguments: Bool
     public var help: String
 
     public init() {
         longOption = ""
         argumentCount = 0
+        completions = []
         hasFileArguments = false
         help = ""
     }
