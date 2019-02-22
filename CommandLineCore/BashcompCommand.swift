@@ -122,7 +122,7 @@ extension CommandDefinition {
         let rargs = args.reversed()
         for (idx, arg) in rargs.enumerated() {
             let matches = self.options.filter { (opt) -> Bool in
-                if opt.longOption == arg {
+                if opt.longOption == arg || opt.shortOption == arg {
                     return true
                 }
                 return false
@@ -134,7 +134,7 @@ extension CommandDefinition {
         if let sub = trailingSubcommand(for: args) ?? defaultSubcommandDefinition() {
             for (idx, arg) in rargs.enumerated() {
                 let matches = sub.options.filter { (opt) -> Bool in
-                    if opt.longOption == arg {
+                    if opt.longOption == arg || opt.shortOption == arg {
                         return true
                     }
                     return false

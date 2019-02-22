@@ -65,6 +65,8 @@ class CleanupCommand: Command {
         realm.shortOption = "-r"
         realm.longOption = "--realm"
         realm.help = "Delete Realm sync_bin."
+        realm.argumentCount = 1
+        realm.hasFileArguments = true
         command.options.append(realm)
 
         var opt = ParameterInfo()
@@ -99,7 +101,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["pt", "bashcomp", "cleanup", ""]
+    let args = ["pt", "bashcomp", "cleanup", "-r", "gg", ""]
     #else
     let args = CommandLine.arguments
     #endif
