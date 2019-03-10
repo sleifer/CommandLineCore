@@ -127,6 +127,15 @@ open class ProcessRunner {
     }
 
     @discardableResult
+    public class func runCommand(_ fullCmd: String, echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+        let args = fullCmd.quoteSafeWords()
+        let cmd = args[0]
+        var sargs = args
+        sargs.remove(at: 0)
+        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, dryrun: dryrun, completion: completion)
+    }
+
+    @discardableResult
     public class func runCommand(_ args: [String], echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let cmd = args[0]
         var sargs = args

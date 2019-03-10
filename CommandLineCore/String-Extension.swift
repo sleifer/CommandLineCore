@@ -100,10 +100,6 @@ public extension String {
         return self[index(startIndex, offsetBy: idx)]
     }
 
-    subscript (idx: Int) -> String {
-        return String(self[idx] as Character)
-    }
-
     subscript(range: Range<Int>) -> String {
         let lower = self.index(self.startIndex, offsetBy: range.lowerBound)
         let upper = self.index(self.startIndex, offsetBy: range.upperBound)
@@ -170,6 +166,39 @@ public extension String {
             }
         }
         return lines
+    }
+
+    func quoteSafeWords() -> [String] {
+        let text = self
+        var words: [String] = []
+        var lastIndex: Int = 0
+        var inSingleQuote: Bool = false
+        var inDoubleQuote: Bool = false
+        let quoteCharacters = CharacterSet(charactersIn: "\"' ")
+        for index in 0..<text.count {
+            let achar = text[index]
+            if achar == "\"" {
+                inDoubleQuote = !inDoubleQuote
+            } else if achar == "'" {
+                inSingleQuote = !inSingleQuote
+            } else if achar == " " {
+                if inSingleQuote == false && inDoubleQuote == false && lastIndex != index {
+                    let word = text[lastIndex..<index].trimmingCharacters(in: quoteCharacters)
+                    if word.count > 0 {
+                        words.append(word)
+                    }
+                    lastIndex = index + 1
+                }
+            }
+        }
+        let index = text.count
+        if inSingleQuote == false && inDoubleQuote == false && lastIndex != index {
+            let word = text[lastIndex..<index].trimmingCharacters(in: quoteCharacters)
+            if word.count > 0 {
+                words.append(word)
+            }
+        }
+        return words
     }
 }
 
