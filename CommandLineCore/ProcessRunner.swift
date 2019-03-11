@@ -40,6 +40,13 @@ open class ProcessRunner {
         return self
     }
 
+    public func getOutput() -> String? {
+        if status == 0 {
+            return stdOut
+        }
+        return nil
+    }
+
     internal func start(_ completion: ProcessRunnerHandler? = nil) {
         let proc = Process()
         process = proc
@@ -126,24 +133,24 @@ open class ProcessRunner {
     }
 
     @discardableResult
-    public class func runCommand(_ fullCmd: String, echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ fullCmd: String, echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, sync: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let args = fullCmd.quoteSafeWords()
         let cmd = args[0]
         var sargs = args
         sargs.remove(at: 0)
-        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, dryrun: dryrun, completion: completion)
+        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, dryrun: dryrun, sync: sync, completion: completion)
     }
 
     @discardableResult
-    public class func runCommand(_ args: [String], echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ args: [String], echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, sync: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let cmd = args[0]
         var sargs = args
         sargs.remove(at: 0)
-        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, dryrun: dryrun, completion: completion)
+        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, dryrun: dryrun, sync: sync, completion: completion)
     }
 
     @discardableResult
-    public class func runCommand(_ cmd: String, args: [String], echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ cmd: String, args: [String], echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, sync: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let fullCmd: String
         if cmd == whichCmd {
             fullCmd = cmd
@@ -173,7 +180,7 @@ open class ProcessRunner {
             }
             done = true
         }
-        if completion == nil {
+        if completion == nil || sync == true {
             while done == false {
                 CommandLineRunLoop.shared.spinRunLoop()
             }
