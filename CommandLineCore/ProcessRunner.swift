@@ -28,7 +28,7 @@ open class ProcessRunner {
     }
 
     @discardableResult
-    public func printErrors() -> Bool {
+    public func printErrors() -> ProcessRunner {
         if stdErr.trimmed().count > 0 {
             print(ANSIColor.red + "Error output running process" + ANSIColor.reset)
             if echo == false {
@@ -36,9 +36,8 @@ open class ProcessRunner {
             }
             print(stdErr)
             print(ANSIColor.red + "^---^" + ANSIColor.reset)
-            return true
         }
-        return false
+        return self
     }
 
     internal func start(_ completion: ProcessRunnerHandler? = nil) {
