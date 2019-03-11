@@ -12,6 +12,7 @@ open class CommandCore {
     public static var core: CommandCore?
 
     public private(set) var version: String
+    public private(set) var commandPath: String
     public private(set) var commandName: String
     public private(set) var baseDirectory: String
     public private(set) var definition: CommandDefinition
@@ -21,6 +22,7 @@ open class CommandCore {
 
     public init() {
         version = "0.1"
+        commandPath = "?"
         commandName = "?"
         baseDirectory = FileManager.default.currentDirectoryPath
         definition = CommandDefinition()
@@ -83,6 +85,7 @@ open class CommandCore {
             parser = theParser
 
             do {
+                commandPath = args[0].fullPath
                 commandName = args[0].lastPathComponent
                 let theParsed = try theParser.parse(args)
                 parsed = theParsed
