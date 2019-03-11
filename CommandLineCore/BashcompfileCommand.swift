@@ -32,17 +32,43 @@ _%@()
 complete -o filenames -F _%@ %@
 """
 
+    let format3 = """
+_%@()
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="$(%@ bashcomp ${COMP_WORDS[@]:1:$COMP_CWORD} "${cur}")"
+
+    if [[ $opts = *"!files!"* ]]; then
+        COMPREPLY=( $(compgen -df -- ${cur}) )
+    else
+        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    fi
+    __gitcomp "${COMPREPLY}"
+
+    return 0
+}
+"""
+
     required public init() {
     }
 
     open func run(cmd: ParsedCommand, core: CommandCore) {
         var text = ""
         text.append(String(format: format1, cmd.toolName))
-        text.append("\n")
+        text.append("\n\n")
         text.append(String(format: format2, cmd.toolName, cmd.toolName))
         text.append("\n")
         for param in cmd.parameters {
             text.append(String(format: format2, cmd.toolName, param))
+            text.append("\n")
+        }
+        if core.commandName.hasPrefix("git-") == true {
+            text.append("\n")
+            let mungedToolName = "git_" + core.commandName.suffix(from: 4)
+            text.append(String(format: format3, mungedToolName, cmd.toolName))
             text.append("\n")
         }
 
