@@ -73,6 +73,7 @@ public struct SubcommandDefinition {
     public var hidden: Bool
     public var suppressesOptions: Bool
     public var warnOnMissingSpec: Bool
+    public var commandAlias: String?
 
     public init() {
         options = []

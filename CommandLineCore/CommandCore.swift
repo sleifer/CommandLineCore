@@ -17,6 +17,7 @@ open class CommandCore {
     public private(set) var baseDirectory: String
     public private(set) var definition: CommandDefinition
     var commandMap: [String: Command.Type]
+    var commandAlias: [String: String]
     public private(set) var parser: ArgParser?
     public private(set) var parsed: ParsedCommand?
 
@@ -27,6 +28,7 @@ open class CommandCore {
         baseDirectory = FileManager.default.currentDirectoryPath
         definition = CommandDefinition()
         commandMap = [:]
+        commandAlias = [:]
         addDefaultGlobalOptions()
         addInternalCommands()
 
@@ -77,6 +79,9 @@ open class CommandCore {
         let def = commandClass.commandDefinition()
         commandMap[def.name] = commandClass
         definition.subcommands.append(def)
+        if let alias = def.commandAlias {
+            commandAlias[alias] = def.name
+        }
     }
 
     public func process(args: [String]) {
@@ -87,7 +92,15 @@ open class CommandCore {
             do {
                 commandPath = args[0].fullPath
                 commandName = args[0].lastPathComponent
-                let theParsed = try theParser.parse(args)
+
+                let theParsed: ParsedCommand
+                if let alias = commandAlias[commandName] {
+                    var altArgs = args
+                    altArgs.insert(alias, at: 1)
+                    theParsed = try theParser.parse(altArgs)
+                } else {
+                    theParsed = try theParser.parse(args)
+                }
                 parsed = theParsed
 
                 var skipSubcommand = false
