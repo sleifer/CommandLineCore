@@ -32,7 +32,8 @@ open class ProcessRunner {
         if stdErr.trimmed().count > 0 {
             print(ANSIColor.red + "Error output running process" + ANSIColor.reset)
             if echo == false {
-                print(">> \(command) \(arguments.joined(separator: " ")) <<")
+                let msg = ">> \(command) \(arguments.joined(separator: " ")) <<"
+                print(ANSIColor.blue + msg + ANSIColor.reset)
             }
             print(stdErr)
             print(ANSIColor.red + "^---^" + ANSIColor.reset)
@@ -164,7 +165,8 @@ open class ProcessRunner {
         if cmd != whichCmd {
             runner.echo = echoOutput
             if echoCommand == true || dryrun == true {
-                print(">> \(cmd) \(args.joined(separator: " ")) <<")
+                let msg = ">> \(cmd) \(args.joined(separator: " ")) <<"
+                print(ANSIColor.blue + msg + ANSIColor.reset)
             }
         }
 
