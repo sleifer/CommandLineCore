@@ -40,8 +40,11 @@ open class ProcessRunner {
         return self
     }
 
-    public func getOutput() -> String? {
+    public func getOutput(_ trimmed: Bool = false) -> String? {
         if status == 0 {
+            if trimmed == true {
+                return stdOut.trimmed()
+            }
             return stdOut
         }
         return nil
