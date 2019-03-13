@@ -29,7 +29,7 @@ open class ProcessRunner {
 
     @discardableResult
     public func printErrors() -> ProcessRunner {
-        if stdErr.trimmed().count > 0 {
+        if status != 0 && stdErr.trimmed().count > 0 {
             print(ANSIColor.red + "Error output running process" + ANSIColor.reset)
             if echo == false {
                 let msg = ">> \(command) \(arguments.joined(separator: " ")) <<"
