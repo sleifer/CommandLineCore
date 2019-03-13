@@ -52,6 +52,13 @@ _%@()
 }
 """
 
+    let format4 = """
+_%@()
+{
+_%@
+}
+"""
+
     required public init() {
     }
 
@@ -70,6 +77,13 @@ _%@()
             let mungedToolName = "git_" + core.commandName.suffix(from: 4)
             text.append(String(format: format3, mungedToolName, cmd.toolName))
             text.append("\n")
+            for param in cmd.parameters {
+                if param.hasPrefix("git-") == true {
+                let mungedParam = "git_" + param.suffix(from: 4)
+                text.append(String(format: format4, mungedParam, mungedToolName))
+                text.append("\n")
+                }
+            }
         }
 
         if cmd.option("--write") != nil {
