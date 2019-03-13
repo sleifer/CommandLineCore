@@ -31,9 +31,22 @@ public class StandardMenu {
     var entries: [StandardMenuEntry] = []
     var title: String?
 
+    static var waitForInputDone: Bool = false
+
+    @discardableResult
     public static func readline(with prompt: String) -> String? {
-        print("\(prompt): ", terminator: "")
-        return readLine(strippingNewline: true)
+        print("\(prompt):")
+
+        var text: String?
+        waitForInputDone = false
+        FileHandle.standardInput.readabilityHandler = { (handle) in
+            text = String(decoding: handle.availableData, as: UTF8.self)
+            waitForInputDone = true
+        }
+        while waitForInputDone == false && CommandLineRunLoop.shared.spinRunLoop(0.5) == true {
+        }
+
+        return text?.trimmed()
     }
 
     public init(_ title: String? = nil) {

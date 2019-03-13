@@ -20,8 +20,8 @@ open class CommandLineRunLoop {
     }
 
     @discardableResult
-    public func spinRunLoop() -> Bool {
-        return RunLoop.current.run(mode: RunLoop.Mode.default, before: Date(timeIntervalSinceNow: 2))
+    public func spinRunLoop(_ waiting: TimeInterval = 2) -> Bool {
+        return RunLoop.current.run(mode: RunLoop.Mode.default, before: Date(timeIntervalSinceNow: waiting))
     }
 
     public func startBackgroundTask() {
