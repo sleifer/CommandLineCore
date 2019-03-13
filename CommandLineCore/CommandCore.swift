@@ -96,7 +96,11 @@ open class CommandCore {
                 let theParsed: ParsedCommand
                 if let alias = commandAlias[commandName] {
                     var altArgs = args
-                    altArgs.insert(alias, at: 1)
+                    if args[safe: 1] == "bashcomp" {
+                        altArgs.insert(alias, at: 2)
+                    } else {
+                        altArgs.insert(alias, at: 1)
+                    }
                     theParsed = try theParser.parse(altArgs)
                 } else {
                     theParsed = try theParser.parse(args)
