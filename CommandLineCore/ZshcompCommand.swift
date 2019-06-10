@@ -1,5 +1,5 @@
 //
-//  BashcompCommand.swift
+//  ZshcompCommand.swift
 //  project-tool
 //
 //  Created by Simeon Leifer on 10/11/17.
@@ -8,11 +8,13 @@
 
 import Foundation
 
-open class BashcompCommand: Command {
+open class ZshcompCommand: Command {
     required public init() {
     }
 
-    var items: [String] = []
+    var commands: [String] = []
+    var options: [String] = []
+    var showFiles: Bool = false
 
     // swiftlint:disable cyclomatic_complexity
 
@@ -21,7 +23,9 @@ open class BashcompCommand: Command {
         let last = allArgs.last ?? ""
         let args = Array(allArgs.dropLast())
 
-        items.removeAll()
+        commands = []
+        options = []
+        showFiles = false
 
         if let def = core.parser?.definition {
             var trailingSub = def.trailingSubcommand(for: args)
@@ -29,11 +33,8 @@ open class BashcompCommand: Command {
                 let subs = def.subcommands.filter { (sub) -> Bool in
                     return sub.hidden == false
                 }
-                let cmdNames = subs.map({ (sub) -> String in
-                    return sub.name
-                })
-                for item in cmdNames {
-                    items.append(item)
+                for item in subs {
+                    commands.append("\(item.name):\(item.synopsis)")
                 }
 
                 trailingSub = def.defaultSubcommandDefinition()
@@ -41,52 +42,67 @@ open class BashcompCommand: Command {
             let hasFileParams = def.hasTrailingFileParameter(for: args)
             if let trailingOpt = def.trailingOption(for: args) {
                 if trailingOpt.hasFileArguments == true {
-                    printFileCompletions()
+                    showFiles = true
                 } else {
                     if let callback = trailingOpt.completionCallback {
                         let completions = callback()
                         for item in completions {
-                            items.append(item)
+                            commands.append(item)
                         }
                     } else {
                         for item in trailingOpt.completions {
-                            items.append(item)
+                            commands.append(item)
                         }
                     }
                 }
             } else if (last.count == 0 && hasFileParams == false) || (last.count > 0 && last[0] == "-") {
-                var optNames = def.options.map { (opt) -> String in
-                    return opt.longOption
-                }
+                var collectedOptions: [CommandOption] = []
+                collectedOptions.append(contentsOf: def.options)
                 if let trailingSub = trailingSub {
-                    let subOptNames = trailingSub.options.map { (opt) -> String in
-                        return opt.longOption
-                    }
-                    optNames = Array(Set(optNames).union(Set(subOptNames)))
+                    collectedOptions.append(contentsOf: trailingSub.options)
                 }
-                for item in optNames {
-                    items.append(item)
+                collectedOptions.sort { (lhs, rhs) -> Bool in
+                    return lhs.longOption < rhs.longOption
+                }
+
+                var lastLongOption: String = ""
+
+                for item in collectedOptions {
+                    if lastLongOption != item.longOption {
+                        if let short = item.shortOption {
+                            options.append("(\(short) \(item.longOption))'{\(short),\(item.longOption)}'[\(item.help)]")
+                        } else {
+                            options.append("\(item.longOption)[\(item.help)]")
+                        }
+                    }
+                    lastLongOption = item.longOption
                 }
             }
             if let param = def.trailingParameter(for: args, trailing: last.count == 0) {
                 if let callback = param.completionCallback {
                     let completions = callback()
                     for item in completions {
-                        items.append(item)
+                        commands.append(item)
                     }
                 } else {
                     for item in param.completions {
-                        items.append(item)
+                        commands.append(item)
                     }
                 }
             }
             if hasFileParams == true {
-                printFileCompletions()
+                showFiles = true
             }
         }
 
-        for item in items {
-            print(item)
+        do {
+            let json: [String: Any] = ["arguments": options, "describe": commands, "files": showFiles ? "true" : "false"]
+            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            if let jsonStr = String(data: data, encoding: .utf8) {
+                print(jsonStr)
+                return
+            }
+        } catch {
         }
     }
 
@@ -94,17 +110,11 @@ open class BashcompCommand: Command {
 
     public static func commandDefinition() -> SubcommandDefinition {
         var command = SubcommandDefinition()
-        command.name = "bashcomp"
+        command.name = "zshcomp"
         command.hidden = true
         command.suppressesOptions = true
         command.warnOnMissingSpec = false
 
         return command
-    }
-
-    func printFileCompletions() {
-        if items.count == 0 {
-            items.append("!files!")
-        }
     }
 }

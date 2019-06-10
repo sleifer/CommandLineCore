@@ -16,6 +16,9 @@
 		DB23F6F6211096230048E1E9 /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F6EF211096230048E1E9 /* ProcessRunner.swift */; };
 		DB23F6FA211098110048E1E9 /* CommandLineRunLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F6F9211098110048E1E9 /* CommandLineRunLoop.swift */; };
 		DB23F6FF211099CA0048E1E9 /* DebugLogFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */; };
+		DB2B557A22AEBF9C001FAEB4 /* ZshcompfileCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B557822AEBF9C001FAEB4 /* ZshcompfileCommand.swift */; };
+		DB2B557B22AEBF9C001FAEB4 /* ZshcompCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B557922AEBF9C001FAEB4 /* ZshcompCommand.swift */; };
+		DB2B557D22AED3FA001FAEB4 /* CommandDefinition-Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B557C22AED3FA001FAEB4 /* CommandDefinition-Completion.swift */; };
 		DB8031FC215B1CB100DF1991 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8031FB215B1CB100DF1991 /* main.swift */; };
 		DB803201215B1CC500DF1991 /* libCommandLineCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB23F6DD211095CA0048E1E9 /* libCommandLineCore.a */; };
 		DB803203215B2A4C00DF1991 /* CommandCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB803202215B2A4C00DF1991 /* CommandCore.swift */; };
@@ -47,6 +50,9 @@
 		DB23F6EF211096230048E1E9 /* ProcessRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		DB23F6F9211098110048E1E9 /* CommandLineRunLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineRunLoop.swift; sourceTree = "<group>"; };
 		DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugLogFile.swift; sourceTree = "<group>"; };
+		DB2B557822AEBF9C001FAEB4 /* ZshcompfileCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZshcompfileCommand.swift; sourceTree = "<group>"; };
+		DB2B557922AEBF9C001FAEB4 /* ZshcompCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZshcompCommand.swift; sourceTree = "<group>"; };
+		DB2B557C22AED3FA001FAEB4 /* CommandDefinition-Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommandDefinition-Completion.swift"; sourceTree = "<group>"; };
 		DB7F4BF72115D0DC00795353 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		DB8031F9215B1CB100DF1991 /* CLCTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLCTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8031FB215B1CB100DF1991 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -105,12 +111,15 @@
 				DBF28EF6216961A300A233D2 /* ColorTerminal.swift */,
 				DB23F6EA211096230048E1E9 /* Command.swift */,
 				DB803202215B2A4C00DF1991 /* CommandCore.swift */,
+				DB2B557C22AED3FA001FAEB4 /* CommandDefinition-Completion.swift */,
 				DB23F6F9211098110048E1E9 /* CommandLineRunLoop.swift */,
 				DB23F6FE211099CA0048E1E9 /* DebugLogFile.swift */,
 				DB23F6EF211096230048E1E9 /* ProcessRunner.swift */,
 				DBC93CFF2239368400AD2543 /* StandardMenu.swift */,
 				DB23F6EC211096230048E1E9 /* String-Extension.swift */,
 				DB23F6ED211096230048E1E9 /* StringWriting.swift */,
+				DB2B557922AEBF9C001FAEB4 /* ZshcompCommand.swift */,
+				DB2B557822AEBF9C001FAEB4 /* ZshcompfileCommand.swift */,
 			);
 			path = CommandLineCore;
 			sourceTree = "<group>";
@@ -250,8 +259,11 @@
 				DB23F6F4211096230048E1E9 /* StringWriting.swift in Sources */,
 				DB23F6F1211096230048E1E9 /* Command.swift in Sources */,
 				DB23F6F6211096230048E1E9 /* ProcessRunner.swift in Sources */,
+				DB2B557A22AEBF9C001FAEB4 /* ZshcompfileCommand.swift in Sources */,
 				DB871FF6217CBF51009FF758 /* Array-Extension.swift in Sources */,
+				DB2B557D22AED3FA001FAEB4 /* CommandDefinition-Completion.swift in Sources */,
 				DB23F6F3211096230048E1E9 /* String-Extension.swift in Sources */,
+				DB2B557B22AEBF9C001FAEB4 /* ZshcompCommand.swift in Sources */,
 				DB23F6F2211096230048E1E9 /* ArgParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

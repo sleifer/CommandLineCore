@@ -53,6 +53,8 @@ open class CommandCore {
     func addInternalCommands() {
         add(command: BashcompCommand.self)
         add(command: BashcompfileCommand.self)
+        add(command: ZshcompCommand.self)
+        add(command: ZshcompfileCommand.self)
     }
 
     public func set(version: String) {
