@@ -98,7 +98,7 @@ open class CommandCore {
                 let theParsed: ParsedCommand
                 if let alias = commandAlias[commandName] {
                     var altArgs = args
-                    if args[safe: 1] == "bashcomp" {
+                    if args[safe: 1] == "bashcomp" || args[safe: 1] == "zshcomp" {
                         altArgs.insert(alias, at: 2)
                     } else {
                         altArgs.insert(alias, at: 1)

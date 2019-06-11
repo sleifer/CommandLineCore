@@ -27,16 +27,24 @@ _%@() {
     )
 
     if (( CURRENT >= 2 )); then
-        opt=$($_comp_command2 zshcomp $LBUFFER $RBUFFER)
+        opt=$($_comp_command2 zshcomp "$LBUFFER" "$RBUFFER" $CURRENT ${#words} $words)
         showfiles=$(echo $opt | jq -r '.files')
         thearguments=$(echo $opt | jq -r '.arguments[]')
         thedescribe=$(echo $opt | jq -r '.describe[]')
 
-        while IFS= read -r line ; do args+="$line"; done <<< "$thearguments"
-        while IFS= read -r line ; do commands+="$line"; done <<< "$thedescribe"
+        theargumentscount=$(echo $opt | jq -r '.arguments | length')
+        if (( theargumentscount > 0 )); then
+            thearguments=$(echo $opt | jq -r '.arguments[]')
+            while IFS= read -r line ; do args+="$line"; done <<< "$thearguments"
+            _arguments -s $args
+        fi
 
-        _describe -t commands 'commands' commands
-        _arguments -s $args
+        thedescribecount=$(echo $opt | jq -r '.describe | length')
+        if (( thedescribecount > 0 )); then
+            thedescribe=$(echo $opt | jq -r '.describe[]')
+            while IFS= read -r line ; do commands+="$line"; done <<< "$thedescribe"
+            _describe -t commands 'commands' commands
+        fi
 
         if [[ "$showfiles" == "true" ]]; then
             _files
@@ -56,7 +64,7 @@ compctl -K _%@ %@
 
     open func run(cmd: ParsedCommand, core: CommandCore) {
         var text = ""
-        text.append(String(format: format1, cmd.toolName))
+        text.append(String(format: format1, cmd.toolName, cmd.toolName))
         text.append("\n\n")
         text.append(String(format: format2, cmd.toolName, cmd.toolName))
         text.append("\n")
@@ -77,7 +85,7 @@ compctl -K _%@ %@
                     try text.write(toFileURL: url)
                     print("Completion written to ~/.zsh_completion/\(filename)")
                     print("Load with:")
-                    print(". ~/.zsh_completion./\(filename)")
+                    print(". ~/.zsh_completion/\(filename)")
                 } catch {
                     print("Error writing to ~/.zsh_completion/\(filename)")
                 }

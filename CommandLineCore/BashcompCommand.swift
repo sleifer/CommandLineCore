@@ -88,6 +88,10 @@ open class BashcompCommand: Command {
         for item in items {
             print(item)
         }
+
+        // >> Testing
+//        testDump(allArgs: allArgs, last: last, args: args, items: items)
+        // << Testing
     }
 
     // swiftlint:enable cyclomatic_complexity
@@ -106,5 +110,16 @@ open class BashcompCommand: Command {
         if items.count == 0 {
             items.append("!files!")
         }
+    }
+
+    func testDump(allArgs: [String], last: String, args: [String], items: [String]) {
+        debugLog("bashcomp: allArgs:")
+        debugLog(allArgs)
+        debugLog("bashcomp: last:")
+        debugLog(last)
+        debugLog("bashcomp: args:")
+        debugLog(args)
+        debugLog("bashcomp: items reply:")
+        debugLog(items)
     }
 }
