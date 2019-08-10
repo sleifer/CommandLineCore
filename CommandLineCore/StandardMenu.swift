@@ -43,7 +43,8 @@ public class StandardMenu {
             text = String(decoding: handle.availableData, as: UTF8.self)
             waitForInputDone = true
         }
-        while waitForInputDone == false && CommandLineRunLoop.shared.spinRunLoop(0.5) == true {
+        while waitForInputDone == false && CommandLineRunLoop.shared.spinRunLoop(0.2) == true {
+            usleep(10000)
         }
 
         return text?.trimmed()
