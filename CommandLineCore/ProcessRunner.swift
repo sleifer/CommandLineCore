@@ -18,6 +18,7 @@ open class ProcessRunner {
     public var stdOut: String = ""
     public var stdErr: String = ""
     public var echo: Bool = false
+    public var echoRepeatLines: Bool = true
     public var commandString: String {
         return "\(command) \(arguments.joined(separator: " "))"
     }
@@ -60,13 +61,17 @@ open class ProcessRunner {
         proc.standardOutput = outPipe
         let errPipe = Pipe()
         proc.standardError = errPipe
+        var lastLine: String = "-<<<-><->>>-"
 
         if echo == true {
             outPipe.fileHandleForReading.readabilityHandler = { [weak self] (handle) in
                 let outData = handle.availableData
                 if let str = String(data: outData, encoding: .utf8) {
                     if str.trimmed().count > 0 {
-                        print(str, terminator: "")
+                        if self?.echoRepeatLines == true || lastLine != str {
+                            print(str, terminator: "")
+                        }
+                        lastLine = str
                     }
                     self?.stdOut.append(str)
                 }
@@ -76,7 +81,10 @@ open class ProcessRunner {
                 let outData = handle.availableData
                 if let str = String(data: outData, encoding: .utf8) {
                     if str.trimmed().count > 0 {
-                        print(str, terminator: "")
+                        if self?.echoRepeatLines == true || lastLine != str {
+                            print(str, terminator: "")
+                        }
+                        lastLine = str
                     }
                     self?.stdErr.append(str)
                 }
@@ -90,7 +98,10 @@ open class ProcessRunner {
             if let str = String(data: outData, encoding: .utf8) {
                 if self.echo == true {
                     if str.trimmed().count > 0 {
-                        print(str)
+                        if self.echoRepeatLines == true || lastLine != str {
+                            print(str)
+                        }
+                        lastLine = str
                     }
                 }
                 self.stdOut.append(str)
@@ -100,7 +111,10 @@ open class ProcessRunner {
             if let str = String(data: errData, encoding: .utf8) {
                 if self.echo == true {
                     if str.trimmed().count > 0 {
-                        print(str)
+                        if self.echoRepeatLines == true || lastLine != str {
+                            print(str)
+                        }
+                        lastLine = str
                     }
                 }
                 self.stdErr.append(str)
@@ -137,24 +151,24 @@ open class ProcessRunner {
     }
 
     @discardableResult
-    public class func runCommand(_ fullCmd: String, echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ fullCmd: String, echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let args = fullCmd.quoteSafeWords()
         let cmd = args[0]
         var sargs = args
         sargs.remove(at: 0)
-        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, dryrun: dryrun, completion: completion)
+        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, echoRepeatOutput: echoRepeatOutput, dryrun: dryrun, completion: completion)
     }
 
     @discardableResult
-    public class func runCommand(_ args: [String], echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ args: [String], echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let cmd = args[0]
         var sargs = args
         sargs.remove(at: 0)
-        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, dryrun: dryrun, completion: completion)
+        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, echoRepeatOutput: echoRepeatOutput, dryrun: dryrun, completion: completion)
     }
 
     @discardableResult
-    public class func runCommand(_ cmd: String, args: [String], echoCommand: Bool = false, echoOutput: Bool = false, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ cmd: String, args: [String], echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let fullCmd: String
         if cmd == whichCmd {
             fullCmd = cmd
@@ -164,6 +178,7 @@ open class ProcessRunner {
         let runner = ProcessRunner(fullCmd, args: args)
         if cmd != whichCmd {
             runner.echo = echoOutput
+            runner.echoRepeatLines = echoRepeatOutput
             if echoCommand == true || dryrun == true {
                 let msg = ">> \(cmd) \(args.joined(separator: " ")) <<"
                 print(ANSIColor.blue + msg + ANSIColor.reset)
