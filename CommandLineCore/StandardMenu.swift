@@ -19,12 +19,21 @@ public struct StandardMenuOptions: OptionSet {
 
     public static let menuRepeats = StandardMenuOptions(rawValue: 1 << 0)
     public static let multiSelectable = StandardMenuOptions(rawValue: 1 << 1)
+    public static let isBackItem = StandardMenuOptions(rawValue: 1 << 2)
+    public static let isQuitItem = StandardMenuOptions(rawValue: 1 << 3)
 }
 
-struct StandardMenuEntry {
+class StandardMenuEntry {
+    var menu: String = ""
     var label: String
     var options: StandardMenuOptions
     var handler: StandardMenuHandler?
+
+    init(label: String, options: StandardMenuOptions, handler: StandardMenuHandler? = nil) {
+        self.label = label
+        self.options = options
+        self.handler = handler
+    }
 }
 
 public class StandardMenu {
@@ -59,23 +68,35 @@ public class StandardMenu {
         entries.append(entry)
     }
 
-    @discardableResult
-    public func present() -> Int {
+    public func present() {
+        var lookup: [String: StandardMenuEntry] = [:]
+        var menu: Int = 1
+        for item in entries {
+            if item.options.contains(.isBackItem) {
+                item.menu = " b"
+            } else if item.options.contains(.isQuitItem) {
+                item.menu = " q"
+            } else {
+                item.menu = String(format: "%2d", menu)
+                menu += 1
+            }
+            lookup[item.menu.trimmed()] = item
+        }
+
         while true {
             if let title = title {
                 print("\(title):")
             }
-            for (index, value) in entries.enumerated() {
-                let numStr = String(format: "%2d", index + 1)
-                print("\(numStr). \(value.label)")
+            for item in entries {
+                print("\(item.menu). \(item.label)")
             }
             let ans = StandardMenu.readline(with: "Select")
-            if let ans = ans, let val = Int(ans), val > 0, val <= entries.count {
-                if let handler = entries[val - 1].handler {
+            if let ans = ans?.trimmed(), let entry = lookup[ans] {
+                if let handler = entry.handler {
                     handler()
                 }
-                if entries[val-1].options.contains(.menuRepeats) == false {
-                    return val
+                if entry.options.contains(.menuRepeats) == false {
+                    return
                 }
             }
             print()
