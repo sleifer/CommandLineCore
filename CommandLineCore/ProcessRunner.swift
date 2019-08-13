@@ -52,6 +52,8 @@ open class ProcessRunner {
         return nil
     }
 
+    // swiftlint:disable cyclomatic_complexity
+
     internal func start(_ completion: ProcessRunnerHandler? = nil) {
         let proc = Process()
         process = proc
@@ -132,6 +134,8 @@ open class ProcessRunner {
         CommandLineRunLoop.shared.startBackgroundTask()
         proc.launch()
     }
+
+    // swiftlint:enable cyclomatic_complexity
 
     static let whichCmd = "/usr/bin/which"
     static var whichLookup: [String: String] = [:]
