@@ -174,16 +174,35 @@ public extension String {
         var lastIndex: Int = 0
         var inSingleQuote: Bool = false
         var inDoubleQuote: Bool = false
-        let quoteCharacters = CharacterSet(charactersIn: "\"' ")
+        var needSingleTrim: Bool = false
+        var needDoubleTrim: Bool = false
+        let singleTrimCharacters = CharacterSet(charactersIn: "' ")
+        let doubleTrimCharacters = CharacterSet(charactersIn: "\" ")
+        let spaceTrimCharacters = CharacterSet(charactersIn: " ")
         for index in 0..<text.count {
             let achar = text[index]
-            if achar == "\"" {
+            if achar == "\"" && inSingleQuote == false {
                 inDoubleQuote = !inDoubleQuote
-            } else if achar == "'" {
+                if inDoubleQuote == true {
+                    needDoubleTrim = true
+                }
+            } else if achar == "'" && inDoubleQuote == false {
                 inSingleQuote = !inSingleQuote
+                if inSingleQuote == true {
+                    needSingleTrim = true
+                }
             } else if achar == " " {
                 if inSingleQuote == false && inDoubleQuote == false && lastIndex != index {
-                    let word = text[lastIndex..<index].trimmingCharacters(in: quoteCharacters)
+                    let word: String
+                    if needDoubleTrim == true {
+                        word = text[lastIndex..<index].trimmingCharacters(in: doubleTrimCharacters)
+                    } else if needSingleTrim == true {
+                        word = text[lastIndex..<index].trimmingCharacters(in: singleTrimCharacters)
+                    } else {
+                        word = text[lastIndex..<index].trimmingCharacters(in: spaceTrimCharacters)
+                    }
+                    needDoubleTrim = false
+                    needSingleTrim = false
                     if word.count > 0 {
                         words.append(word)
                     }
@@ -193,7 +212,16 @@ public extension String {
         }
         let index = text.count
         if inSingleQuote == false && inDoubleQuote == false && lastIndex != index {
-            let word = text[lastIndex..<index].trimmingCharacters(in: quoteCharacters)
+            let word: String
+            if needDoubleTrim == true {
+                word = text[lastIndex..<index].trimmingCharacters(in: doubleTrimCharacters)
+            } else if needSingleTrim == true {
+                word = text[lastIndex..<index].trimmingCharacters(in: singleTrimCharacters)
+            } else {
+                word = text[lastIndex..<index].trimmingCharacters(in: spaceTrimCharacters)
+            }
+            needDoubleTrim = false
+            needSingleTrim = false
             if word.count > 0 {
                 words.append(word)
             }
