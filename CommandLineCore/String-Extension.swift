@@ -168,6 +168,8 @@ public extension String {
         return lines
     }
 
+    // swiftlint:disable cyclomatic_complexity
+
     func quoteSafeWords() -> [String] {
         let text = self
         var words: [String] = []
@@ -228,6 +230,8 @@ public extension String {
         }
         return words
     }
+
+    // swiftlint:enable cyclomatic_complexity
 }
 
 public extension Collection where Element == String {
