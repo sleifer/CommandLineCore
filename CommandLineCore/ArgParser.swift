@@ -115,6 +115,13 @@ public struct ParsedCommand {
 
         return option
     }
+
+    public func boolOption(_ name: String) -> Bool {
+        if option(name) != nil {
+            return true
+        }
+        return false
+    }
 }
 
 public enum ArgParserError: Error {
