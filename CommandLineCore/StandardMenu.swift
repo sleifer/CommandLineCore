@@ -43,8 +43,10 @@ public class StandardMenu {
     static var waitForInputDone: Bool = false
 
     @discardableResult
-    public static func readline(with prompt: String) -> String? {
-        print("\(prompt):")
+    public static func readline(with prompt: String? = nil) -> String? {
+        if let prompt = prompt {
+            print("\(prompt):")
+        }
 
         var text: String?
         waitForInputDone = false
