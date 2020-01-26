@@ -151,6 +151,10 @@ public extension String {
         return matches
     }
 
+    func components(separatedBy separator: CharacterSet) -> [String] {
+        return NSString(string: self).components(separatedBy: separator)
+    }
+
     func components(separatedBy separator: String) -> [String] {
         return NSString(string: self).components(separatedBy: separator)
     }
