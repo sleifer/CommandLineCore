@@ -55,7 +55,7 @@ public class StandardMenu {
             waitForInputDone = true
         }
         while waitForInputDone == false && CommandLineRunLoop.shared.spinRunLoop(0.2) == true {
-            usleep(10000)
+            usleep(50000)
         }
 
         return text?.trimmed()
