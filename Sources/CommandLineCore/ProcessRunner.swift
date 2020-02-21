@@ -8,7 +8,8 @@
 
 import Foundation
 
-public typealias ProcessRunnerHandler = (_ runner: ProcessRunner) -> Void
+public typealias ProcessRunnerCompletionHandler = (_ runner: ProcessRunner) -> Void
+public typealias ProcessRunnerOutputHandler = (_ runner: ProcessRunner, _ stdOutLine: String?, _ stdErrLine: String?) -> Void
 
 open class ProcessRunner {
     public let command: String
@@ -22,6 +23,7 @@ open class ProcessRunner {
     public var commandString: String {
         return "\(command) \(arguments.joined(separator: " "))"
     }
+    public var outputHandler: ProcessRunnerOutputHandler?
 
     internal init(_ cmd: String, args: [String]) {
         command = cmd
@@ -54,7 +56,7 @@ open class ProcessRunner {
 
     // swiftlint:disable cyclomatic_complexity
 
-    internal func start(_ completion: ProcessRunnerHandler? = nil) {
+    internal func start(_ completion: ProcessRunnerCompletionHandler? = nil) {
         let proc = Process()
         process = proc
         proc.launchPath = command
@@ -73,6 +75,9 @@ open class ProcessRunner {
                         if self?.echoRepeatLines == true || lastLine != str {
                             print(str, terminator: "")
                         }
+                        if let self = self, let outputHandler = self.outputHandler {
+                            outputHandler(self, str, nil)
+                        }
                         lastLine = str
                     }
                     self?.stdOut.append(str)
@@ -86,7 +91,34 @@ open class ProcessRunner {
                         if self?.echoRepeatLines == true || lastLine != str {
                             print(str, terminator: "")
                         }
+                        if let self = self, let outputHandler = self.outputHandler {
+                            outputHandler(self, nil, str)
+                        }
                         lastLine = str
+                    }
+                    self?.stdErr.append(str)
+                }
+            }
+        } else if outputHandler != nil {
+            outPipe.fileHandleForReading.readabilityHandler = { [weak self] (handle) in
+                let outData = handle.availableData
+                if let str = String(data: outData, encoding: .utf8) {
+                    if str.trimmed().count > 0 {
+                        if let self = self, let outputHandler = self.outputHandler {
+                            outputHandler(self, str, nil)
+                        }
+                    }
+                    self?.stdOut.append(str)
+                }
+            }
+
+            errPipe.fileHandleForReading.readabilityHandler = { [weak self] (handle) in
+                let outData = handle.availableData
+                if let str = String(data: outData, encoding: .utf8) {
+                    if str.trimmed().count > 0 {
+                        if let self = self, let outputHandler = self.outputHandler {
+                            outputHandler(self, nil, str)
+                        }
                     }
                     self?.stdErr.append(str)
                 }
@@ -155,24 +187,24 @@ open class ProcessRunner {
     }
 
     @discardableResult
-    public class func runCommand(_ fullCmd: String, echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ fullCmd: String, echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, outputHandler: ProcessRunnerOutputHandler? = nil, completion: ProcessRunnerCompletionHandler? = nil) -> ProcessRunner {
         let args = fullCmd.quoteSafeWords()
         let cmd = args[0]
         var sargs = args
         sargs.remove(at: 0)
-        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, echoRepeatOutput: echoRepeatOutput, dryrun: dryrun, completion: completion)
+        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, echoRepeatOutput: echoRepeatOutput, dryrun: dryrun, outputHandler: outputHandler, completion: completion)
     }
 
     @discardableResult
-    public class func runCommand(_ args: [String], echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ args: [String], echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, outputHandler: ProcessRunnerOutputHandler? = nil, completion: ProcessRunnerCompletionHandler? = nil) -> ProcessRunner {
         let cmd = args[0]
         var sargs = args
         sargs.remove(at: 0)
-        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, echoRepeatOutput: echoRepeatOutput, dryrun: dryrun, completion: completion)
+        return runCommand(cmd, args: sargs, echoCommand: echoCommand, echoOutput: echoOutput, echoRepeatOutput: echoRepeatOutput, dryrun: dryrun, outputHandler: outputHandler, completion: completion)
     }
 
     @discardableResult
-    public class func runCommand(_ cmd: String, args: [String], echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
+    public class func runCommand(_ cmd: String, args: [String], echoCommand: Bool = false, echoOutput: Bool = false, echoRepeatOutput: Bool = true, dryrun: Bool = false, outputHandler: ProcessRunnerOutputHandler? = nil, completion: ProcessRunnerCompletionHandler? = nil) -> ProcessRunner {
         let fullCmd: String
         if cmd == whichCmd {
             fullCmd = cmd
@@ -183,6 +215,7 @@ open class ProcessRunner {
         if cmd != whichCmd {
             runner.echo = echoOutput
             runner.echoRepeatLines = echoRepeatOutput
+            runner.outputHandler = outputHandler
             if echoCommand == true || dryrun == true {
                 let msg = ">> \(cmd) \(args.joined(separator: " ")) <<"
                 print(ANSIColor.blue + msg + ANSIColor.reset)
