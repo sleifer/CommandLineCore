@@ -48,15 +48,7 @@ public class StandardMenu {
             print("\(prompt):")
         }
 
-        var text: String?
-        waitForInputDone = false
-        FileHandle.standardInput.readabilityHandler = { (handle) in
-            text = String(decoding: handle.availableData, as: UTF8.self)
-            waitForInputDone = true
-        }
-        while waitForInputDone == false && CommandLineRunLoop.shared.spinRunLoop(0.2) == true {
-            usleep(50000)
-        }
+        let text: String? = readLine()
 
         return text?.trimmed()
     }
