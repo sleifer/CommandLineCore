@@ -141,8 +141,12 @@ open class ArgParser {
         definition = inDefinition
     }
 
-    public func parse(_ inArgs: [String]) throws -> ParsedCommand {
-        args = inArgs.splittingShortArgs()
+    public func parse(_ inArgs: [String], splitShorts: Bool = true) throws -> ParsedCommand {
+        if splitShorts == true {
+            args = inArgs.splittingShortArgs()
+        } else {
+            args = inArgs
+        }
 
         var availableOptions = optionMap(definition.options)
         let availableSubcommands = subcommandMap(definition.subcommands)

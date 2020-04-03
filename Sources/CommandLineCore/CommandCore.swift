@@ -95,6 +95,10 @@ open class CommandCore {
                 commandPath = args[0].fullPath
                 commandName = args[0].lastPathComponent
 
+                var isNotComp = true
+                if args[safe: 1] == "bashcomp" || args[safe: 1] == "zshcomp" {
+                    isNotComp = false
+                }
                 let theParsed: ParsedCommand
                 if let alias = commandAlias[commandName] {
                     var altArgs = args
@@ -103,9 +107,9 @@ open class CommandCore {
                     } else {
                         altArgs.insert(alias, at: 1)
                     }
-                    theParsed = try theParser.parse(altArgs)
+                    theParsed = try theParser.parse(altArgs, splitShorts: isNotComp)
                 } else {
-                    theParsed = try theParser.parse(args)
+                    theParsed = try theParser.parse(args, splitShorts: isNotComp)
                 }
                 parsed = theParsed
 
