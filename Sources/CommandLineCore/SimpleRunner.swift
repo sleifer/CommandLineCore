@@ -10,6 +10,18 @@ import Foundation
 public typealias SimpleRunnerCompletionHandler = (_ runner: SimpleRunner) -> Void
 public typealias SimpleRunnerOutputHandler = (_ runner: SimpleRunner, _ stdOutLine: String?, _ stdErrLine: String?) -> Void
 
+public let debugOutputHandler = { (_ runner: SimpleRunner, _ stdOutLine: String?, _ stdErrLine: String?) in
+    if let value = stdOutLine {
+        print("Out: \(value)")
+    }
+    if let value = stdErrLine {
+        print("Err: \(value)")
+    }
+}
+
+public let silentOutputHandler = { (_ runner: SimpleRunner, _ stdOutLine: String?, _ stdErrLine: String?) in
+}
+
 open class SimpleRunner {
     public var fullCmd: String
     public var command: String
@@ -123,7 +135,7 @@ open class SimpleRunner {
     }
 
     @discardableResult
-    public class func run(_ fullCmd: String, queue: DispatchQueue = DispatchQueue.main, dryrun: Bool = false, outputHandler: SimpleRunnerOutputHandler? = nil, completion: SimpleRunnerCompletionHandler? = nil) -> SimpleRunner {
+    public class func run(_ fullCmd: String, queue: DispatchQueue = DispatchQueue.main, dryrun: Bool = false, outputHandler: SimpleRunnerOutputHandler? = silentOutputHandler, completion: SimpleRunnerCompletionHandler? = nil) -> SimpleRunner {
         let runner = SimpleRunner(fullCmd)
 
         if dryrun == true {
