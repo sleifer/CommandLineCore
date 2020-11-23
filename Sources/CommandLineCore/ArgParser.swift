@@ -116,6 +116,17 @@ public struct ParsedCommand {
         return option
     }
 
+    public func options(named name: String) -> [ParsedOption] {
+        let options = self.options.filter({ (option: ParsedOption) -> Bool in
+            if option.longOption == name {
+                return true
+            }
+            return false
+        })
+
+        return options
+    }
+
     public func boolOption(_ name: String) -> Bool {
         if option(name) != nil {
             return true
