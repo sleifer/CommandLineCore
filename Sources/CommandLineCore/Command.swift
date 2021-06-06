@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol Command: class {
+public protocol Command: AnyObject {
     init()
     func run(cmd: ParsedCommand, core: CommandCore)
     static func commandDefinition() -> SubcommandDefinition
