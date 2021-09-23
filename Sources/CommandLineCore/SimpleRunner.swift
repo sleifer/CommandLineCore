@@ -71,6 +71,8 @@ open class SimpleRunner {
         let errPipe = Pipe()
         proc.standardError = errPipe
 
+        proc.environment = ["PATH":"/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"]
+
         if outputHandler != nil {
             outPipe.fileHandleForReading.readabilityHandler = { [weak self] handle in
                 let outData = handle.availableData
