@@ -137,7 +137,7 @@ open class SimpleRunner {
     }
 
     @discardableResult
-    public class func run(_ fullCmd: String, queue: DispatchQueue = DispatchQueue.main, dryrun: Bool = false, outputHandler: SimpleRunnerOutputHandler? = silentOutputHandler, completion: SimpleRunnerCompletionHandler? = nil) -> SimpleRunner {
+    public class func run(_ fullCmd: String, queue: DispatchQueue = DispatchQueue.main, dryrun: Bool = false, outputHandler: SimpleRunnerOutputHandler? = silentOutputHandler, syncCompletion: Bool = false, completion: SimpleRunnerCompletionHandler? = nil) -> SimpleRunner {
         let runner = SimpleRunner(fullCmd)
 
         if dryrun == true {
@@ -146,7 +146,7 @@ open class SimpleRunner {
             return runner
         }
 
-        if let completion = completion {
+        if syncCompletion == false, let completion = completion {
             DispatchQueue.global(qos: .background).async {
                 runner.command = which(runner.command)
                 runner.outputHandler = outputHandler
@@ -159,6 +159,7 @@ open class SimpleRunner {
             runner.command = which(runner.command)
             runner.outputHandler = outputHandler
             runner.run()
+            completion?(runner)
         }
         return runner
     }
